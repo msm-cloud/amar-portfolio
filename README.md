@@ -8,7 +8,7 @@ A professional portfolio website.
 - [TypeScript](https://www.typescriptlang.org/) — language
 - [Tailwind CSS](https://tailwindcss.com/) — styling
 - [Framer Motion](https://www.framer.com/motion/) — animation _(not installed yet — added in a later step)_
-- [Supabase](https://supabase.com/) — database / auth _(not installed yet — added in a later step)_
+- [Supabase](https://supabase.com/) — database / auth
 - [Resend](https://resend.com/) — transactional email _(not installed yet — added in a later step)_
 - [Vercel](https://vercel.com/) — hosting/deployment
 
@@ -18,7 +18,7 @@ A professional portfolio website.
 src/
   app/                    Next.js routes (pages, layouts)
     (public)/             Route group for public-facing pages (home, about, etc.)
-    admin/                Route group for the admin dashboard (auth-protected later)
+    admin/                Admin dashboard (auth-protected via middleware.ts)
     api/                  Route handlers, for plain HTTP endpoints (e.g. webhooks)
   components/
     ui/                   Reusable, generic UI primitives (buttons, cards, glass-card, bento-card)
@@ -38,7 +38,7 @@ src/
     globals.css           Global styles (Tailwind entrypoint)
 
 supabase/
-  migrations/             SQL migration files (empty for now)
+  migrations/             SQL migration files
 ```
 
 Each major folder above has its own short `README.md` explaining its purpose in more detail — check there before adding new files.
@@ -77,6 +77,12 @@ Each major folder above has its own short `README.md` explaining its purpose in 
 | `pnpm lint`         | Lint with ESLint                         |
 | `pnpm format`       | Format all files with Prettier           |
 | `pnpm format:check` | Check formatting without writing changes |
+
+## Admin Access
+
+The admin panel (`/admin/*`) uses Supabase Auth — there's no public signup.
+See [`docs/admin-setup.md`](docs/admin-setup.md) for how to create the first
+admin user and add more editors later.
 
 ## Contributing
 
