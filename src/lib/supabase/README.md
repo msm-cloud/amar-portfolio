@@ -1,10 +1,17 @@
 # lib/supabase/
 
-Supabase client setup. Empty for now — will be filled in a later step with:
+Supabase client setup for the three execution contexts Next.js App Router
+code can run in:
 
-- `client.ts` — browser client (for Client Components)
-- `server.ts` — server client (for Server Components / Server Actions,
-  using cookies for session handling)
+- `client.ts` — browser client (`createClient()`), for Client Components.
+  Uses `NEXT_PUBLIC_*` env vars only.
+- `server.ts` — server client (`createClient()`, async), for Server
+  Components / Server Actions / Route Handlers. Reads/writes the session
+  via cookies so RLS is enforced as the signed-in user. Also exports
+  `createServiceRoleClient()`, which bypasses RLS using the service role
+  key — server-only, never import it into a Client Component.
+- `middleware.ts` — `updateSession()` helper used by the root
+  `middleware.ts` to keep the auth session cookie fresh on every request.
 
-Do not add Supabase code here until the `@supabase/ssr` / `@supabase/supabase-js`
-packages are actually installed.
+Import the right one for where your code runs — mixing them up (e.g. using
+the browser client in a Server Component) will not work correctly.
