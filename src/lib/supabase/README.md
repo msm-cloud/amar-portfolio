@@ -10,8 +10,9 @@ code can run in:
   via cookies so RLS is enforced as the signed-in user. Also exports
   `createServiceRoleClient()`, which bypasses RLS using the service role
   key — server-only, never import it into a Client Component.
-- `middleware.ts` — `updateSession()` helper used by the root
-  `middleware.ts` to keep the auth session cookie fresh on every request.
+- `proxy.ts` — `updateSession()` helper used by the root `proxy.ts` (Next.js
+  16's renamed `middleware.ts` convention) to keep the auth session cookie
+  fresh on every request and enforce `/admin/*` route protection.
 
 Import the right one for where your code runs — mixing them up (e.g. using
 the browser client in a Server Component) will not work correctly.

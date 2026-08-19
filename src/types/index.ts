@@ -135,3 +135,23 @@ export interface ContactMessage {
   isRead: boolean;
   createdAt: string;
 }
+
+// ============================================================================
+// Auth
+// ----------------------------------------------------------------------------
+// Minimal, app-facing shape for the signed-in admin/editor user — a trimmed
+// combination of the Supabase auth user and their `profiles` row. Use this
+// instead of passing around the full `@supabase/supabase-js` `User` object.
+// ============================================================================
+
+export interface AuthUser {
+  id: string;
+  email: string | null;
+}
+
+/** The signed-in user plus their profile — only ever exists for a session
+ * that passed the admin/editor role check in middleware. */
+export interface AuthenticatedAdmin {
+  user: AuthUser;
+  profile: Profile;
+}

@@ -47,6 +47,7 @@ export interface Database {
           avatar_url?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       projects: {
         Row: {
@@ -112,6 +113,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       skills: {
         Row: {
@@ -141,6 +143,7 @@ export interface Database {
           icon_name?: string | null;
           display_order?: number;
         };
+        Relationships: [];
       };
       experience: {
         Row: {
@@ -182,6 +185,7 @@ export interface Database {
           is_current?: boolean;
           display_order?: number;
         };
+        Relationships: [];
       };
       certifications: {
         Row: {
@@ -217,6 +221,7 @@ export interface Database {
           image_url?: string | null;
           display_order?: number;
         };
+        Relationships: [];
       };
       testimonials: {
         Row: {
@@ -255,6 +260,7 @@ export interface Database {
           is_featured?: boolean;
           display_order?: number;
         };
+        Relationships: [];
       };
       blog_posts: {
         Row: {
@@ -305,6 +311,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       contact_messages: {
         Row: {
@@ -334,6 +341,7 @@ export interface Database {
           is_read?: boolean;
           created_at?: string;
         };
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
