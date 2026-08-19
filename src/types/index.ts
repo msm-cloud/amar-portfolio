@@ -15,3 +15,123 @@ export interface SocialLink {
   label: string;
   href: string;
 }
+
+// ============================================================================
+// Domain types
+// ----------------------------------------------------------------------------
+// Clean, app-facing types mirroring the database schema (see
+// types/database.ts and supabase/migrations/), but without Supabase's
+// Insert/Update/Row wrapper metadata. Use these everywhere in the app
+// instead of reaching into `Database['public']['Tables'][...]['Row']`
+// directly — if the DB shape changes, only this file (and the mapping code
+// that reads from Supabase) needs to change.
+// ============================================================================
+
+export type ProfileRole = 'admin' | 'editor';
+export type ContentStatus = 'draft' | 'published';
+
+export interface Profile {
+  id: string;
+  fullName: string | null;
+  role: ProfileRole;
+  avatarUrl: string | null;
+  createdAt: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  titleBn: string | null;
+  slug: string;
+  description: string | null;
+  descriptionBn: string | null;
+  content: string | null;
+  contentBn: string | null;
+  category: string | null;
+  tags: string[];
+  coverImageUrl: string | null;
+  projectUrl: string | null;
+  githubUrl: string | null;
+  isFeatured: boolean;
+  displayOrder: number;
+  status: ContentStatus;
+  createdBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Skill {
+  id: string;
+  name: string;
+  nameBn: string | null;
+  category: string | null;
+  proficiencyLevel: number | null;
+  iconName: string | null;
+  displayOrder: number;
+}
+
+export interface Experience {
+  id: string;
+  title: string;
+  titleBn: string | null;
+  organization: string;
+  organizationBn: string | null;
+  description: string | null;
+  descriptionBn: string | null;
+  startDate: string;
+  endDate: string | null;
+  isCurrent: boolean;
+  displayOrder: number;
+}
+
+export interface Certification {
+  id: string;
+  title: string;
+  titleBn: string | null;
+  issuingOrganization: string;
+  issuingOrganizationBn: string | null;
+  issueDate: string | null;
+  credentialUrl: string | null;
+  imageUrl: string | null;
+  displayOrder: number;
+}
+
+export interface Testimonial {
+  id: string;
+  authorName: string;
+  authorTitle: string | null;
+  authorTitleBn: string | null;
+  authorCompany: string | null;
+  content: string;
+  contentBn: string | null;
+  avatarUrl: string | null;
+  isFeatured: boolean;
+  displayOrder: number;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  titleBn: string | null;
+  slug: string;
+  excerpt: string | null;
+  excerptBn: string | null;
+  content: string | null;
+  contentBn: string | null;
+  coverImageUrl: string | null;
+  status: ContentStatus;
+  publishedAt: string | null;
+  author: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject: string | null;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+}
