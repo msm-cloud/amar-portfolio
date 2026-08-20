@@ -30,6 +30,9 @@ Current components:
 - `ThemeToggle` — light/dark switch (next-themes).
 - `ProficiencyDots` — filled/unfilled dot indicator (1-5), accessible via
   a single `aria-label` rather than reading out 5 individual dots.
+- `Badge` — small pill for a category/tag label.
+- `CoverImage` — image with a graceful gradient+icon fallback when there's
+  no real image URL yet (e.g. placeholder project/blog data).
 
 All of these read color from the semantic tokens in
 `src/styles/globals.css` (`bg-card`, `text-foreground`, `bg-primary`, …)
