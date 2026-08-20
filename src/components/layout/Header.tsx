@@ -5,15 +5,18 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/Button';
+import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { navItems, siteConfig } from '@/config/site';
 import { useActiveSection } from '@/hooks/useActiveSection';
+import { useTranslation } from '@/lib/use-translation';
 import { cn } from '@/lib/utils';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const { t } = useTranslation();
 
   // Stable across renders (navItems is a module-level constant) so
   // useActiveSection's observer isn't torn down/recreated every render.
@@ -90,29 +93,33 @@ export function Header() {
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
-                {item.label}
+                {t(`nav.${id}`)}
               </a>
             );
           })}
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <LanguageToggle />
           <ThemeToggle />
           {/* PLACEHOLDER - replace via admin panel */}
           <a
             href="#"
             className={buttonVariants({ variant: 'outline', size: 'sm' })}
           >
-            Resume
+            {t('nav.resume')}
           </a>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
+          <LanguageToggle />
           <ThemeToggle />
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen((open) => !open)}
-            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={
+              isMobileMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')
+            }
             aria-expanded={isMobileMenuOpen}
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-muted"
           >
@@ -132,7 +139,7 @@ export function Header() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            aria-label="Mobile"
+            aria-label={t('nav.mobileNav')}
             className="overflow-hidden border-t border-border/60 bg-background/95 backdrop-blur-lg md:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-3">
@@ -151,7 +158,7 @@ export function Header() {
                         : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                     )}
                   >
-                    {item.label}
+                    {t(`nav.${id}`)}
                   </a>
                 );
               })}
@@ -164,7 +171,7 @@ export function Header() {
                   'mt-2 w-fit'
                 )}
               >
-                Resume
+                {t('nav.resume')}
               </a>
             </div>
           </motion.nav>

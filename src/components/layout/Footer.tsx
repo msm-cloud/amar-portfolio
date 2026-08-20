@@ -1,11 +1,17 @@
+'use client';
+
 import { Briefcase, Code2, Mail, Share2, type LucideIcon } from 'lucide-react';
 import { navItems, siteConfig, socialLinks } from '@/config/site';
+import { useTranslation } from '@/lib/use-translation';
 
 // lucide-react has no brand-logo icons (confirmed against the installed
 // package — same reason "View Code" uses Code2 instead of a GitHub mark
 // elsewhere in this app), so these are the closest generic stand-ins,
 // not the real platform logos. aria-label on each link still says the
-// real platform name for screen readers.
+// real platform name for screen readers. Platform names (GitHub,
+// Facebook, LinkedIn) are brand names and intentionally not translated,
+// same convention as elsewhere in this app - "Email" is generic but left
+// consistent with its three neighbors rather than singled out.
 const SOCIAL_ICONS: Record<string, LucideIcon> = {
   GitHub: Code2,
   Facebook: Share2,
@@ -15,6 +21,7 @@ const SOCIAL_ICONS: Record<string, LucideIcon> = {
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const { t } = useTranslation();
 
   return (
     <footer className="border-t border-border/60 bg-muted/40">
@@ -51,23 +58,31 @@ export function Footer() {
           </div>
         </div>
 
-        <nav
-          aria-label="Footer"
-          className="flex flex-wrap gap-x-6 gap-y-2 border-t border-border/60 pt-6"
-        >
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+        <div className="border-t border-border/60 pt-6">
+          <p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+            {t('footer.quickLinks')}
+          </p>
+          <nav
+            aria-label={t('footer.quickLinks')}
+            className="flex flex-wrap gap-x-6 gap-y-2"
+          >
+            {navItems.map((item) => {
+              const id = item.href.replace('#', '');
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {t(`nav.${id}`)}
+                </a>
+              );
+            })}
+          </nav>
+        </div>
 
         <p className="text-sm text-muted-foreground">
-          © {year} {siteConfig.name}. All rights reserved.
+          © {year} {siteConfig.name}. {t('footer.rightsReserved')}
         </p>
       </div>
     </footer>

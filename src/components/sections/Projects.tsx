@@ -8,9 +8,13 @@ import { CoverImage } from '@/components/ui/CoverImage';
 import { SectionContainer } from '@/components/ui/SectionContainer';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
+import { useLanguage, type Language } from '@/lib/language-context';
+import { useTranslation } from '@/lib/use-translation';
 import {
   getCategoryIcon,
+  pickBilingual,
   PLACEHOLDER_PROJECTS,
+  translateCategory,
   type PlaceholderProject,
 } from '@/lib/placeholder-data';
 
@@ -26,8 +30,20 @@ function spanClassFor(featuredIndex: number): string {
   return '';
 }
 
-function ProjectCard({ project }: { project: PlaceholderProject }) {
+function ProjectCard({
+  project,
+  language,
+}: {
+  project: PlaceholderProject;
+  language: Language;
+}) {
   const CategoryIcon = getCategoryIcon(project.category);
+  const title = pickBilingual(project.title, project.title_bn, language);
+  const description = pickBilingual(
+    project.description ?? '',
+    project.description_bn,
+    language
+  );
 
   return (
     <Link href={`/projects/${project.slug}`} className="block h-full">
@@ -35,21 +51,21 @@ function ProjectCard({ project }: { project: PlaceholderProject }) {
         <div className="-m-6 mb-4">
           <CoverImage
             src={project.cover_image_url}
-            alt={project.title}
+            alt={title}
             icon={CategoryIcon}
             className="h-40 w-full sm:h-48"
           />
         </div>
 
         <div className="flex flex-1 flex-col gap-2">
-          {project.category && <Badge>{project.category}</Badge>}
+          {project.category && (
+            <Badge>{translateCategory(project.category, language)}</Badge>
+          )}
 
-          <h3 className="text-lg font-semibold text-foreground">
-            {project.title}
-          </h3>
+          <h3 className="text-lg font-semibold text-foreground">{title}</h3>
 
           <p className="line-clamp-2 text-sm text-muted-foreground">
-            {project.description}
+            {description}
           </p>
 
           {project.tags.length > 0 && (
@@ -69,14 +85,16 @@ function ProjectCard({ project }: { project: PlaceholderProject }) {
 
 export function Projects() {
   const shouldReduceMotion = useReducedMotion();
+  const { language } = useLanguage();
+  const { t } = useTranslation();
   let featuredCount = 0;
 
   return (
     <SectionContainer id="projects">
       <SectionHeading
-        eyebrow="Projects"
-        title="Selected Work"
-        description="A mix of client web development, personal projects, and graphic design — spanning the financial sector and beyond."
+        eyebrow={t('projects.eyebrow')}
+        title={t('projects.title')}
+        description={t('projects.description')}
       />
 
       {/* PLACEHOLDER data - src/lib/placeholder-data.ts. Replace with a
@@ -100,7 +118,7 @@ export function Projects() {
               variants={fadeInUp}
               className={spanClass}
             >
-              <ProjectCard project={project} />
+              <ProjectCard project={project} language={language} />
             </motion.div>
           );
         })}

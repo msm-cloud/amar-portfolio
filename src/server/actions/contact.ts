@@ -7,7 +7,12 @@ import { createClient } from '@/lib/supabase/server';
 
 export interface ContactFormState {
   status: 'idle' | 'success' | 'error';
-  message: string;
+  // Translation key (dot path into src/lib/translations/*.json), not the
+  // final display text - the server has no idea which language the
+  // visitor's toggle is set to (that's client-only state, never sent to
+  // the server), so it can only tell the client WHAT happened via a key.
+  // Contact.tsx resolves this with useTranslation()'s t().
+  messageKey: string | null;
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,7 +24,9 @@ const MESSAGE_MAX_LENGTH = 5000;
 // Where notification emails go. Sent from Resend's shared
 // onboarding@resend.dev address for now — swap to a verified custom
 // domain sender later (Resend requires a verified domain to send from
-// anything else).
+// anything else). This notification email itself stays English-only
+// regardless of the visitor's language toggle - it's read by the site
+// owner, not the visitor.
 const NOTIFICATION_RECIPIENT = 'mmshahidullah103@gmail.com';
 const NOTIFICATION_SENDER = 'Amar Portfolio <onboarding@resend.dev>';
 
@@ -58,7 +65,7 @@ async function isRateLimited(): Promise<boolean> {
 
 /**
  * Contact form submission. Designed for React's useActionState:
- *   const [state, formAction] = useActionState(submitContactForm, { status: 'idle', message: '' });
+ *   const [state, formAction] = useActionState(submitContactForm, { status: 'idle', messageKey: null });
  */
 export async function submitContactForm(
   _prevState: ContactFormState,
@@ -70,10 +77,7 @@ export async function submitContactForm(
   // its submission was rejected.
   const honeypot = String(formData.get('company_website') ?? '').trim();
   if (honeypot !== '') {
-    return {
-      status: 'success',
-      message: "Thanks! I'll get back to you soon.",
-    };
+    return { status: 'success', messageKey: 'contact.success' };
   }
 
   const name = String(formData.get('name') ?? '').trim();
@@ -84,39 +88,23 @@ export async function submitContactForm(
   // Server-side validation - never trust the client's HTML5 `required`/
   // `minLength` alone, those are trivially bypassed.
   if (!name || name.length > NAME_MAX_LENGTH) {
-    return {
-      status: 'error',
-      message: `Please enter your name (max ${NAME_MAX_LENGTH} characters).`,
-    };
+    return { status: 'error', messageKey: 'contact.errors.name' };
   }
   if (!email || !EMAIL_REGEX.test(email)) {
-    return { status: 'error', message: 'Please enter a valid email address.' };
+    return { status: 'error', messageKey: 'contact.errors.email' };
   }
   if (subject.length > SUBJECT_MAX_LENGTH) {
-    return {
-      status: 'error',
-      message: `Subject is too long (max ${SUBJECT_MAX_LENGTH} characters).`,
-    };
+    return { status: 'error', messageKey: 'contact.errors.subject' };
   }
   if (!message || message.length < MESSAGE_MIN_LENGTH) {
-    return {
-      status: 'error',
-      message: `Please enter a message of at least ${MESSAGE_MIN_LENGTH} characters.`,
-    };
+    return { status: 'error', messageKey: 'contact.errors.messageTooShort' };
   }
   if (message.length > MESSAGE_MAX_LENGTH) {
-    return {
-      status: 'error',
-      message: `Message is too long (max ${MESSAGE_MAX_LENGTH} characters).`,
-    };
+    return { status: 'error', messageKey: 'contact.errors.messageTooLong' };
   }
 
   if (await isRateLimited()) {
-    return {
-      status: 'error',
-      message:
-        "You're submitting a bit too quickly — please wait a minute and try again.",
-    };
+    return { status: 'error', messageKey: 'contact.errors.rateLimited' };
   }
 
   const supabase = await createClient();
@@ -131,11 +119,7 @@ export async function submitContactForm(
 
   if (insertError) {
     console.error('[contact] Supabase insert failed:', insertError);
-    return {
-      status: 'error',
-      message:
-        'Something went wrong saving your message. Please try again in a moment.',
-    };
+    return { status: 'error', messageKey: 'contact.errors.generic' };
   }
 
   // Best-effort email notification. The message is already safely in the
@@ -164,10 +148,7 @@ export async function submitContactForm(
     }
   }
 
-  return {
-    status: 'success',
-    message: "Thanks! I'll get back to you soon.",
-  };
+  return { status: 'success', messageKey: 'contact.success' };
 }
 
 /**

@@ -9,12 +9,13 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { Textarea } from '@/components/ui/Textarea';
 import { fadeInUp } from '@/lib/animations';
+import { useTranslation } from '@/lib/use-translation';
 import {
   submitContactForm,
   type ContactFormState,
 } from '@/server/actions/contact';
 
-const initialState: ContactFormState = { status: 'idle', message: '' };
+const initialState: ContactFormState = { status: 'idle', messageKey: null };
 
 interface FormValues {
   name: string;
@@ -32,6 +33,7 @@ const emptyFormValues: FormValues = {
 
 export function Contact() {
   const shouldReduceMotion = useReducedMotion();
+  const { t } = useTranslation();
   const [state, formAction] = useActionState(submitContactForm, initialState);
 
   // Controlled, not uncontrolled defaultValue/name-only inputs: React's
@@ -53,9 +55,9 @@ export function Contact() {
   return (
     <SectionContainer id="contact">
       <SectionHeading
-        eyebrow="Contact"
-        title="Let's Work Together"
-        description="Have a project in mind, or just want to say hello? Send a message and I'll get back to you soon."
+        eyebrow={t('contact.eyebrow')}
+        title={t('contact.title')}
+        description={t('contact.description')}
       />
 
       <motion.div
@@ -68,10 +70,10 @@ export function Contact() {
           {state.status === 'success' ? (
             <div className="py-6 text-center">
               <h3 className="text-lg font-semibold text-foreground">
-                Message sent
+                {t('contact.successTitle')}
               </h3>
               <p className="mt-2 text-sm text-muted-foreground">
-                {state.message}
+                {state.messageKey ? t(state.messageKey) : t('contact.success')}
               </p>
             </div>
           ) : (
@@ -80,7 +82,8 @@ export function Contact() {
                   by keyboard nav, unlabeled to screen readers), but a bot
                   that blindly fills every input it finds will trip it.
                   Left uncontrolled on purpose - nothing depends on this
-                  field surviving a reset. */}
+                  field surviving a reset. Not translated - a human never
+                  perceives it either way. */}
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute -left-[9999px] h-px w-px overflow-hidden"
@@ -96,7 +99,7 @@ export function Contact() {
               </div>
 
               <Input
-                label="Name"
+                label={t('contact.nameLabel')}
                 name="name"
                 type="text"
                 autoComplete="name"
@@ -106,7 +109,7 @@ export function Contact() {
                 onChange={handleChange}
               />
               <Input
-                label="Email"
+                label={t('contact.emailLabel')}
                 name="email"
                 type="email"
                 autoComplete="email"
@@ -115,7 +118,7 @@ export function Contact() {
                 onChange={handleChange}
               />
               <Input
-                label="Subject (optional)"
+                label={t('contact.subjectLabel')}
                 name="subject"
                 type="text"
                 autoComplete="off"
@@ -124,7 +127,7 @@ export function Contact() {
                 onChange={handleChange}
               />
               <Textarea
-                label="Message"
+                label={t('contact.messageLabel')}
                 name="message"
                 required
                 minLength={10}
@@ -139,12 +142,17 @@ export function Contact() {
                   role="alert"
                   className="text-sm text-red-600 dark:text-red-400"
                 >
-                  {state.message}
+                  {state.messageKey
+                    ? t(state.messageKey)
+                    : t('contact.errors.generic')}
                 </p>
               )}
 
-              <SubmitButton pendingChildren="Sending…" className="mt-2 w-full">
-                Send Message
+              <SubmitButton
+                pendingChildren={t('contact.sendingButton')}
+                className="mt-2 w-full"
+              >
+                {t('contact.sendButton')}
               </SubmitButton>
             </form>
           )}

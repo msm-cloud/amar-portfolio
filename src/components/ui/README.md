@@ -30,6 +30,8 @@ Current components:
 - `SectionContainer` — max-width + padding wrapper for page sections.
 - `SectionHeading` — eyebrow + title + optional description heading block.
 - `ThemeToggle` — light/dark switch (next-themes).
+- `LanguageToggle` — EN / বাং switch (src/lib/language-context.tsx),
+  client-side only, instant, no URL change.
 - `ProficiencyDots` — filled/unfilled dot indicator (1-5), accessible via
   a single `aria-label` rather than reading out 5 individual dots.
 - `Badge` — small pill for a category/tag label.

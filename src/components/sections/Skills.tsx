@@ -25,6 +25,8 @@ import { ProficiencyDots } from '@/components/ui/ProficiencyDots';
 import { SectionContainer } from '@/components/ui/SectionContainer';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
+import { useLanguage } from '@/lib/language-context';
+import { useTranslation } from '@/lib/use-translation';
 
 interface SkillItem {
   name: string;
@@ -34,21 +36,19 @@ interface SkillItem {
 }
 
 interface SkillCategory {
+  /** Category key, also used as the translation lookup key below -
+   * NOT translated data itself (skill/category names here are inline,
+   * not sourced from placeholder-data.ts's Database-typed rows, so
+   * there's no `_bn` column to read - see CATEGORY_LABELS_BN instead). */
   category: string;
   skills: SkillItem[];
 }
 
-const LEVEL_LABELS: Record<number, string> = {
-  1: 'Beginner',
-  2: 'Familiar',
-  3: 'Intermediate',
-  4: 'Advanced',
-  5: 'Expert',
-};
-
 // PLACEHOLDER - replace with real Supabase data once the admin panel's
 // content management is built. lucide-react has no brand logos, so icons
 // below are the closest reasonable generic match, not official logos.
+// Individual skill names (React, TypeScript, ...) are proper nouns /
+// established English tech terms and intentionally not translated.
 const SKILL_CATEGORIES: SkillCategory[] = [
   {
     category: 'Frontend',
@@ -89,15 +89,24 @@ const SKILL_CATEGORIES: SkillCategory[] = [
   },
 ];
 
+const CATEGORY_LABELS_BN: Record<string, string> = {
+  Frontend: 'ফ্রন্টএন্ড',
+  Backend: 'ব্যাকএন্ড',
+  Design: 'ডিজাইন',
+  'Tools & Other': 'টুলস ও অন্যান্য',
+};
+
 export function Skills() {
   const shouldReduceMotion = useReducedMotion();
+  const { language } = useLanguage();
+  const { t } = useTranslation();
 
   return (
     <SectionContainer id="skills">
       <SectionHeading
-        eyebrow="Skills"
-        title="Tools & Technologies I Work With"
-        description="Grouped by area — hover a card for the exact skill name if the icon alone isn't obvious."
+        eyebrow={t('skills.eyebrow')}
+        title={t('skills.title')}
+        description={t('skills.description')}
       />
 
       <motion.div
@@ -111,7 +120,9 @@ export function Skills() {
           <motion.div key={group.category} variants={fadeInUp}>
             <GlassCard className="p-6 sm:p-8">
               <h3 className="mb-4 text-lg font-semibold text-foreground">
-                {group.category}
+                {language === 'bn'
+                  ? (CATEGORY_LABELS_BN[group.category] ?? group.category)
+                  : group.category}
               </h3>
 
               {/*
@@ -137,7 +148,7 @@ export function Skills() {
                       </span>
                       <ProficiencyDots
                         level={skill.level}
-                        label={LEVEL_LABELS[skill.level]}
+                        label={t(`skills.levels.${skill.level}`)}
                       />
                     </BentoCard>
                   );
