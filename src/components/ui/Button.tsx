@@ -1,23 +1,39 @@
 import type { ButtonHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'outline';
+export type ButtonSize = 'sm' | 'md' | 'lg';
+
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary';
+  variant?: ButtonVariant;
+  size?: ButtonSize;
 }
+
+const VARIANT_CLASSES: Record<ButtonVariant, string> = {
+  primary: 'bg-primary text-primary-foreground hover:bg-primary-hover',
+  secondary: 'bg-muted text-foreground hover:bg-border',
+  ghost: 'bg-transparent text-foreground hover:bg-muted',
+  outline: 'border border-border bg-transparent text-foreground hover:bg-muted',
+};
+
+const SIZE_CLASSES: Record<ButtonSize, string> = {
+  sm: 'px-3 py-1.5 text-xs',
+  md: 'px-4 py-2 text-sm',
+  lg: 'px-6 py-3 text-base',
+};
 
 export function Button({
   variant = 'primary',
+  size = 'md',
   className,
   ...props
 }: ButtonProps) {
   return (
     <button
       className={cn(
-        'inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60',
-        variant === 'primary' &&
-          'bg-zinc-900 text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200',
-        variant === 'secondary' &&
-          'border border-zinc-300 bg-transparent text-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-800',
+        'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60',
+        VARIANT_CLASSES[variant],
+        SIZE_CLASSES[size],
         className
       )}
       {...props}
