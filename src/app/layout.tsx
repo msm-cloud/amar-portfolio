@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 import { siteConfig } from '@/config/site';
 import '@/styles/globals.css';
 
@@ -20,11 +21,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
+    // suppressHydrationWarning: next-themes sets the "dark"/"light" class
+    // (and a color-scheme style) on <html> via an inline script that runs
+    // before hydration, to avoid a flash of the wrong theme. That means the
+    // server-rendered className will legitimately differ from what the
+    // client sees on first paint — this tells React that's expected.
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

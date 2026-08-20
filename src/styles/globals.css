@@ -1,26 +1,112 @@
 @import 'tailwindcss';
 
+/*
+ * Tailwind v4 defaults `dark:` to the `prefers-color-scheme` media query.
+ * We use next-themes (attribute="class"), which toggles a `.dark` class on
+ * <html> instead — so every `dark:` utility anywhere in the app needs to
+ * key off that class, not the OS preference, or the manual theme toggle
+ * would only work for some components. This one line retrofits ALL
+ * existing `dark:` usage in the codebase to the class-based strategy.
+ * https://tailwindcss.com/docs/dark-mode
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Color system
+ * ------------
+ * Semantic tokens (--background, --primary, etc.) are what components use.
+ * They're defined once per theme below and never hardcoded in components,
+ * so toggling `.dark` on <html> re-themes the whole app.
+ *
+ * Palettes (for reference — see also the design system PR description for
+ * the full hex summary):
+ *   Neutral   — Tailwind's zinc scale (already used throughout the app)
+ *   Primary   — Indigo/Violet (base #6366f1 / indigo-500)
+ *   Secondary — Amber (base #f59e0b / amber-500), used sparingly
+ *
+ * Contrast: every text-on-color pairing below (primary-foreground on
+ * primary, accent-foreground on accent, muted-foreground on background)
+ * was checked against WCAG AA (>= 4.5:1 for normal text) in both themes.
+ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Neutral (zinc) */
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
+
+  /* Primary — Indigo/Violet */
+  --color-indigo-300: #a5b4fc;
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-700: #4338ca;
+
+  /* Secondary — Amber */
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+
+  /* Light theme semantic tokens (default) */
+  --background: var(--color-zinc-50);
+  --foreground: var(--color-zinc-900);
+  --card: #ffffff;
+  --border: var(--color-zinc-200);
+  --muted: var(--color-zinc-100);
+  --muted-foreground: var(--color-zinc-600);
+  --primary: var(--color-indigo-600);
+  --primary-hover: var(--color-indigo-700);
+  --primary-foreground: #ffffff;
+  --accent: var(--color-amber-500);
+  --accent-hover: var(--color-amber-600);
+  --accent-foreground: var(--color-zinc-900);
+  --ring: var(--color-indigo-500);
+}
+
+.dark {
+  --background: var(--color-zinc-950);
+  --foreground: var(--color-zinc-50);
+  --card: var(--color-zinc-900);
+  --border: var(--color-zinc-800);
+  --muted: var(--color-zinc-800);
+  --muted-foreground: var(--color-zinc-400);
+  --primary: var(--color-indigo-400);
+  --primary-hover: var(--color-indigo-300);
+  --primary-foreground: var(--color-zinc-950);
+  --accent: var(--color-amber-400);
+  --accent-hover: var(--color-amber-500);
+  --accent-foreground: var(--color-zinc-900);
+  --ring: var(--color-indigo-400);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
