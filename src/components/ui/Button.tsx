@@ -22,6 +22,29 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
   lg: 'px-6 py-3 text-base',
 };
 
+/**
+ * The Button's visual classes, exposed standalone so a link that needs to
+ * *look* like a button (e.g. a CTA `<a href="#section">`) can reuse the
+ * exact same styling instead of duplicating it. Prefer the `Button`
+ * component itself for anything that's actually a `<button>`.
+ */
+export function buttonVariants({
+  variant = 'primary',
+  size = 'md',
+  className,
+}: {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  className?: string;
+} = {}) {
+  return cn(
+    'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60',
+    VARIANT_CLASSES[variant],
+    SIZE_CLASSES[size],
+    className
+  );
+}
+
 export function Button({
   variant = 'primary',
   size = 'md',
@@ -30,12 +53,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={cn(
-        'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60',
-        VARIANT_CLASSES[variant],
-        SIZE_CLASSES[size],
-        className
-      )}
+      className={buttonVariants({ variant, size, className })}
       {...props}
     />
   );
