@@ -2,6 +2,7 @@ import { siteConfig } from '@/config/site';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { Hero } from '@/components/sections/Hero';
 import { About } from '@/components/sections/About';
+import { Skills } from '@/components/sections/Skills';
 
 // Simple header/nav placeholder — just enough to keep ThemeToggle visible.
 // Real navigation (nav links, mobile menu, etc.) belongs in
@@ -26,6 +27,7 @@ export default function Home() {
       <main className="flex flex-1 flex-col">
         <Hero />
         <About />
+        <Skills />
       </main>
     </>
   );
