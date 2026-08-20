@@ -14,6 +14,8 @@ Current components:
 - `SubmitButton` — a `Button` wired to `useFormStatus`; must be rendered
   inside the `<form>` it submits.
 - `Input` — labeled text input.
+- `Textarea` — labeled multi-line text input, same visual language as
+  `Input`.
 - `GlassCard` — glassmorphism surface (blur + translucent `--card` +
   `--border`).
 - `BentoCard` — grid tile for bento layouts; `size` controls its
