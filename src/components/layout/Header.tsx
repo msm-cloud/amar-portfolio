@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -17,14 +18,29 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
+  const pathname = usePathname();
 
-  // Stable across renders (navItems is a module-level constant) so
-  // useActiveSection's observer isn't torn down/recreated every render.
+  // Only hash-anchor items (href starting with "#") participate in
+  // scroll-spy - a real route link like Blog (/blog) has nothing to
+  // observe on the homepage. Stable across renders (navItems is a
+  // module-level constant) so useActiveSection's observer isn't torn
+  // down/recreated every render.
   const sectionIds = useMemo(
-    () => navItems.map((item) => item.href.replace('#', '')),
+    () =>
+      navItems
+        .filter((item) => item.href.startsWith('#'))
+        .map((item) => item.key ?? item.href.slice(1)),
     []
   );
   const activeSection = useActiveSection(sectionIds);
+
+  function isNavItemActive(item: (typeof navItems)[number]): boolean {
+    if (item.href.startsWith('#')) {
+      return activeSection === (item.key ?? item.href.slice(1));
+    }
+    // Real route link (e.g. /blog) - active when it's the current page.
+    return pathname === item.href || pathname.startsWith(`${item.href}/`);
+  }
 
   // Transparent-ish at the very top, glass once scrolled.
   useEffect(() => {
@@ -80,8 +96,7 @@ export function Header() {
 
         <nav className="hidden items-center gap-1 md:flex">
           {navItems.map((item) => {
-            const id = item.href.replace('#', '');
-            const isActive = activeSection === id;
+            const isActive = isNavItemActive(item);
             return (
               <a
                 key={item.href}
@@ -93,7 +108,7 @@ export function Header() {
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
-                {t(`nav.${id}`)}
+                {t(`nav.${item.key ?? item.label.toLowerCase()}`)}
               </a>
             );
           })}
@@ -144,8 +159,7 @@ export function Header() {
           >
             <div className="flex flex-col gap-1 px-4 py-3">
               {navItems.map((item) => {
-                const id = item.href.replace('#', '');
-                const isActive = activeSection === id;
+                const isActive = isNavItemActive(item);
                 return (
                   <a
                     key={item.href}
@@ -158,7 +172,7 @@ export function Header() {
                         : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                     )}
                   >
-                    {t(`nav.${id}`)}
+                    {t(`nav.${item.key ?? item.label.toLowerCase()}`)}
                   </a>
                 );
               })}

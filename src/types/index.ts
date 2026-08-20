@@ -7,6 +7,13 @@
  */
 
 export interface NavItem {
+  /** Translation key (looked up as `nav.<key>`) - also doubles as the
+   * section id for hash-anchor items (href starting with "#"). Decoupled
+   * from href specifically so a real route link (e.g. Blog -> /blog)
+   * doesn't need a "#" in its href to get a translation/section id.
+   * Optional because the admin sidebar also reuses NavItem and has no
+   * use for it - the public Header/Footer always set it. */
+  key?: string;
   label: string;
   href: string;
 }

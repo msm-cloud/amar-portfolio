@@ -12,6 +12,10 @@ signed-in user whose `profiles.role` is `'admin'` or `'editor'`, **except**
 - `dashboard/page.tsx` — placeholder landing page after sign-in.
 - `messages/page.tsx` — lists `contact_messages` (newest first); click a
   row to expand it and mark it read.
+- `blog/page.tsx` — lists all `blog_posts` (draft and published); Edit /
+  Delete per row, "New Post" button.
+- `blog/new/page.tsx` and `blog/[id]/edit/page.tsx` — share
+  `src/components/admin/BlogPostForm.tsx` (Tiptap editor).
 - Other nav items (Projects, Skills, Experience, Certifications,
-  Testimonials, Blog, Settings) are linked from the sidebar but their
-  pages don't exist yet — that's later steps (content-management CRUD UI).
+  Testimonials, Settings) are linked from the sidebar but their pages
+  don't exist yet — that's later steps (content-management CRUD UI).

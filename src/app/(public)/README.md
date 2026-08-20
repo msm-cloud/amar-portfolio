@@ -13,5 +13,8 @@ parentheses) are stripped from the route path.
   routes per section).
 - `projects/[slug]/page.tsx` — project detail pages. Lives inside
   `(public)` specifically so it gets the shared Header/Footer too.
+- `blog/page.tsx` and `blog/[slug]/page.tsx` — blog listing/detail. Real
+  Supabase `blog_posts` data (not the placeholder-data.ts system used
+  elsewhere) - see the bilingual note in `src/lib/blog.ts`.
 
-Add new public pages here, e.g. `blog/[slug]/page.tsx` -> `/blog/[slug]`.
+Add new public pages here, e.g. `about/page.tsx` -> `/about`.

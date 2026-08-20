@@ -12,5 +12,11 @@ directly from Client/Server Components.
   `markContactMessageAsRead` (called directly from the admin messages
   list, not via a `<form>` — Server Actions can be called as plain async
   functions from client code too).
+- `blog.ts` — `createBlogPost` / `updateBlogPost` (paired with
+  `useActionState` in `BlogPostForm`; `updateBlogPost` takes `id` as a
+  pre-bound first argument via `.bind(null, id)`) and `deleteBlogPost`
+  (called directly, like `markContactMessageAsRead`). Authorization for
+  all three is RLS (`blog_posts_write_admin_editor`), not anything
+  checked in these functions themselves.
 
-More will be added in later steps (admin content CRUD).
+More will be added in later steps (Projects/Skills/etc. admin CRUD).
