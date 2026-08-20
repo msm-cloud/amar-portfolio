@@ -13,14 +13,22 @@ export const siteConfig = {
   url: 'https://example.com',
 };
 
+// Hash anchors matching each homepage section's id (Header/Footer smooth-
+// scroll to these). #contact is a placeholder target until the Contact
+// section itself is built.
 export const navItems: NavItem[] = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'About', href: '#about' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Certifications', href: '#certifications' },
+  { label: 'Contact', href: '#contact' },
 ];
 
+// PLACEHOLDER - replace via admin panel / real profile URLs once available.
 export const socialLinks: SocialLink[] = [
-  { label: 'GitHub', href: 'https://github.com/' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/' },
+  { label: 'GitHub', href: '#' },
+  { label: 'Facebook', href: '#' },
+  { label: 'LinkedIn', href: '#' },
+  { label: 'Email', href: 'mailto:hello@example.com' },
 ];

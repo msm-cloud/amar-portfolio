@@ -8,3 +8,6 @@ single component can live next to it instead.
   `ThemeToggle`, but it's generic client-only-render infrastructure (no
   theme-specific logic) likely to be reused by other client-only UI later
   (e.g. a locale toggle), so it lives here rather than next to ThemeToggle.
+- `useActiveSection` — IntersectionObserver-based "which section is
+  currently in view" tracker, used by `Header` for nav-link highlighting.
+  Pass a referentially-stable `sectionIds` array (e.g. via `useMemo`).
