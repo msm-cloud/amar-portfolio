@@ -13,16 +13,20 @@ export const siteConfig = {
   url: 'https://example.com',
 };
 
-// Hash anchors matching each homepage section's id (Header/Footer smooth-
-// scroll to these). #contact is a placeholder target until the Contact
-// section itself is built.
+// Homepage-section items use a "#" href (Header/Footer smooth-scroll to
+// them) and a `key` matching both their section id and their `nav.<key>`
+// translation. Blog is a real route (/blog), not a homepage section - it
+// still gets a `key` for translation lookup, just no "#" href/section-id
+// behavior. #contact is a placeholder target until the Contact section
+// itself is built.
 export const navItems: NavItem[] = [
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Certifications', href: '#certifications' },
-  { label: 'Contact', href: '#contact' },
+  { key: 'about', label: 'About', href: '#about' },
+  { key: 'skills', label: 'Skills', href: '#skills' },
+  { key: 'projects', label: 'Projects', href: '#projects' },
+  { key: 'experience', label: 'Experience', href: '#experience' },
+  { key: 'certifications', label: 'Certifications', href: '#certifications' },
+  { key: 'blog', label: 'Blog', href: '/blog' },
+  { key: 'contact', label: 'Contact', href: '#contact' },
 ];
 
 // PLACEHOLDER - replace via admin panel / real profile URLs once available.

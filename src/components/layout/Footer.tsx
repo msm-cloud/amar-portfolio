@@ -66,18 +66,15 @@ export function Footer() {
             aria-label={t('footer.quickLinks')}
             className="flex flex-wrap gap-x-6 gap-y-2"
           >
-            {navItems.map((item) => {
-              const id = item.href.replace('#', '');
-              return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {t(`nav.${id}`)}
-                </a>
-              );
-            })}
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {t(`nav.${item.key ?? item.label.toLowerCase()}`)}
+              </a>
+            ))}
           </nav>
         </div>
 
