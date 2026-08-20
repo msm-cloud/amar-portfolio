@@ -1,28 +1,43 @@
-import { Banknote, Code2, Palette, type LucideIcon } from 'lucide-react';
+import {
+  Award,
+  Banknote,
+  Code2,
+  GraduationCap,
+  Landmark,
+  Palette,
+  type LucideIcon,
+} from 'lucide-react';
 import type { Database } from '@/types/database';
 
 /**
  * lib/placeholder-data.ts
  * -----------------------
- * PLACEHOLDER DATA — replace with real Supabase queries once the admin
- * panel's content management is built (e.g.
+ * PLACEHOLDER DATA for every section that will eventually read from
+ * Supabase — replace with real queries once the admin panel's content
+ * management is built (e.g.
  * `await supabase.from('projects').select('*').eq('status', 'published')`).
  *
- * Typed directly as the `projects` table's real Row shape (see
+ * Every export here is typed directly as its table's real Row shape (see
  * src/types/database.ts / supabase/migrations/), not a hand-rolled
- * subset — every field a real query would return is present here, using
- * the exact same field names, so swapping this array for a Supabase
- * query result is mechanical: no renaming, no reshaping.
+ * subset — every field a real query would return is present, using the
+ * exact same field names, so swapping an array out for a Supabase query
+ * result is mechanical: no renaming, no reshaping. (This has already
+ * caught a real bug once — a missing column on the projects data failed
+ * `pnpm build`'s type check immediately.)
  *
- * Cover images are all `null` on purpose (no real assets yet) — the UI
- * (`CoverImage` component) falls back to a gradient + icon when
- * `cover_image_url` is null, which is what you'll actually see.
+ * Cover/credential images are all `null` on purpose (no real assets yet)
+ * — the UI (`CoverImage` component) falls back to a gradient + icon when
+ * a `*_image_url` is null, which is what you'll actually see.
  */
+
+const now = '2026-01-01T00:00:00.000Z';
+
+// ============================================================================
+// Projects
+// ============================================================================
 
 export type PlaceholderProject =
   Database['public']['Tables']['projects']['Row'];
-
-const now = '2026-01-01T00:00:00.000Z';
 
 export const PLACEHOLDER_PROJECTS: PlaceholderProject[] = [
   {
@@ -162,4 +177,192 @@ export function getCategoryIcon(category: string | null): LucideIcon {
     return Palette;
   }
   return Code2;
+}
+
+// ============================================================================
+// Experience
+// ============================================================================
+
+export type PlaceholderExperience =
+  Database['public']['Tables']['experience']['Row'];
+
+// PLACEHOLDER - replace with a real Supabase query
+// (`await supabase.from('experience').select('*').order('display_order')`)
+// once the admin panel's content management is built. Reverse
+// chronological order, mixing financial-sector administration with web
+// development/design work per the site owner's actual background.
+export const PLACEHOLDER_EXPERIENCE: PlaceholderExperience[] = [
+  {
+    id: 'exp-freelance',
+    title: 'Freelance Web Developer & Graphic Designer',
+    title_bn: null,
+    organization: 'Self-Employed',
+    organization_bn: null,
+    description:
+      'Design and build websites, web apps, and brand identities for clients — including financial institutions — end to end: from UI design through frontend, backend, and database work.',
+    description_bn: null,
+    start_date: '2024-01-01',
+    end_date: null,
+    is_current: true,
+    display_order: 1,
+  },
+  {
+    id: 'exp-city-savings',
+    title: 'Operations Officer',
+    title_bn: null,
+    organization: 'City Savings Cooperative',
+    organization_bn: null,
+    description:
+      'Managed daily branch operations, transaction reconciliation, and reporting for a savings cooperative. The same operational rigor — accuracy, auditability, no room for "close enough" — now shapes how I build software.',
+    description_bn: null,
+    start_date: '2021-06-01',
+    end_date: '2023-12-31',
+    is_current: false,
+    display_order: 2,
+  },
+  {
+    id: 'exp-web-developer',
+    title: 'Web Developer',
+    title_bn: null,
+    organization: 'Pixel & Ledger Studio',
+    organization_bn: null,
+    description:
+      'Built client websites and web apps end to end, handling both frontend design and backend implementation for small-business and local-organization clients.',
+    description_bn: null,
+    start_date: '2019-01-01',
+    end_date: '2021-05-31',
+    is_current: false,
+    display_order: 3,
+  },
+  {
+    id: 'exp-design-intern',
+    title: 'Graphic Design Intern',
+    title_bn: null,
+    organization: 'Studio Nirjhor',
+    organization_bn: null,
+    description:
+      'Assisted senior designers on branding and print projects — logo exploration, packaging mockups, and print-ready file preparation.',
+    description_bn: null,
+    start_date: '2018-06-01',
+    end_date: '2018-12-31',
+    is_current: false,
+    display_order: 4,
+  },
+];
+
+const MONTH_ABBREVIATIONS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+/** Formats an ISO 'YYYY-MM-DD' date as "Mon YYYY", without going through
+ * `Date` (avoids timezone-shift bugs when parsing a bare date string). */
+export function formatMonthYear(isoDate: string): string {
+  const [year, month] = isoDate.split('-');
+  const monthLabel = MONTH_ABBREVIATIONS[Number(month) - 1] ?? '';
+  return `${monthLabel} ${year}`.trim();
+}
+
+export function formatExperienceDateRange(
+  entry: PlaceholderExperience
+): string {
+  const start = formatMonthYear(entry.start_date);
+  const end =
+    entry.is_current || !entry.end_date
+      ? 'Present'
+      : formatMonthYear(entry.end_date);
+  return `${start} — ${end}`;
+}
+
+// ============================================================================
+// Certifications
+// ============================================================================
+
+export type PlaceholderCertification =
+  Database['public']['Tables']['certifications']['Row'];
+
+// PLACEHOLDER - replace with a real Supabase query
+// (`await supabase.from('certifications').select('*').order('display_order')`)
+// once the admin panel's content management is built. Mix of formal
+// education, a banking/finance credential, and tech/design certifications.
+export const PLACEHOLDER_CERTIFICATIONS: PlaceholderCertification[] = [
+  {
+    id: 'cert-bsc-cs',
+    title: 'B.Sc. in Computer Science',
+    title_bn: null,
+    issuing_organization: 'University of Dhaka',
+    issuing_organization_bn: null,
+    issue_date: '2018-12-01',
+    credential_url: null,
+    image_url: null,
+    display_order: 1,
+  },
+  {
+    id: 'cert-bibm-diploma',
+    title: 'Diploma in Banking',
+    title_bn: null,
+    issuing_organization: 'Bangladesh Institute of Bank Management (BIBM)',
+    issuing_organization_bn: null,
+    issue_date: '2022-03-01',
+    credential_url: 'https://example.com',
+    image_url: null,
+    display_order: 2,
+  },
+  {
+    id: 'cert-meta-frontend',
+    title: 'Meta Front-End Developer Professional Certificate',
+    title_bn: null,
+    issuing_organization: 'Meta (via Coursera)',
+    issuing_organization_bn: null,
+    issue_date: '2023-08-01',
+    credential_url: 'https://example.com',
+    image_url: null,
+    display_order: 3,
+  },
+  {
+    id: 'cert-adobe-photoshop',
+    title: 'Adobe Certified Professional — Photoshop',
+    title_bn: null,
+    issuing_organization: 'Adobe',
+    issuing_organization_bn: null,
+    issue_date: '2020-05-01',
+    credential_url: 'https://example.com',
+    image_url: null,
+    display_order: 4,
+  },
+];
+
+/** Best-effort icon for a certification's badge, based on its title/org. */
+export function getCertificationIcon(
+  cert: PlaceholderCertification
+): LucideIcon {
+  const normalized = `${cert.title} ${cert.issuing_organization}`.toLowerCase();
+  if (
+    normalized.includes('university') ||
+    normalized.includes('b.sc') ||
+    normalized.includes('degree')
+  ) {
+    return GraduationCap;
+  }
+  if (normalized.includes('bank') || normalized.includes('finance')) {
+    return Landmark;
+  }
+  if (
+    normalized.includes('design') ||
+    normalized.includes('adobe') ||
+    normalized.includes('photoshop')
+  ) {
+    return Palette;
+  }
+  return Award;
 }
