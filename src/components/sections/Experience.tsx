@@ -5,17 +5,26 @@ import { Badge } from '@/components/ui/Badge';
 import { SectionContainer } from '@/components/ui/SectionContainer';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
+import { useLanguage } from '@/lib/language-context';
+import { useTranslation } from '@/lib/use-translation';
 import {
   formatExperienceDateRange,
+  pickBilingual,
   PLACEHOLDER_EXPERIENCE,
 } from '@/lib/placeholder-data';
 
 export function Experience() {
   const shouldReduceMotion = useReducedMotion();
+  const { language } = useLanguage();
+  const { t } = useTranslation();
+  const presentLabel = t('experience.present');
 
   return (
     <SectionContainer id="experience">
-      <SectionHeading eyebrow="Experience" title="Career Journey" />
+      <SectionHeading
+        eyebrow={t('experience.eyebrow')}
+        title={t('experience.title')}
+      />
 
       {/*
        * Timeline: each entry carries its own left border + dot (not one
@@ -43,23 +52,31 @@ export function Experience() {
 
             <div className="mb-1 sm:mb-0 sm:text-right">
               <p className="text-sm font-medium text-muted-foreground">
-                {formatExperienceDateRange(entry)}
+                {formatExperienceDateRange(entry, presentLabel)}
               </p>
               {entry.is_current && (
-                <Badge className="mt-1 inline-block">Present</Badge>
+                <Badge className="mt-1 inline-block">{presentLabel}</Badge>
               )}
             </div>
 
             <div>
               <h3 className="text-lg font-semibold text-foreground">
-                {entry.title}
+                {pickBilingual(entry.title, entry.title_bn, language)}
               </h3>
               <p className="text-sm font-medium text-primary">
-                {entry.organization}
+                {pickBilingual(
+                  entry.organization,
+                  entry.organization_bn,
+                  language
+                )}
               </p>
               {entry.description && (
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {entry.description}
+                  {pickBilingual(
+                    entry.description,
+                    entry.description_bn,
+                    language
+                  )}
                 </p>
               )}
             </div>

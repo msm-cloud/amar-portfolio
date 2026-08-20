@@ -7,20 +7,25 @@ import { buttonVariants } from '@/components/ui/Button';
 import { SectionContainer } from '@/components/ui/SectionContainer';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
+import { useLanguage } from '@/lib/language-context';
+import { useTranslation } from '@/lib/use-translation';
 import {
   formatMonthYear,
   getCertificationIcon,
+  pickBilingual,
   PLACEHOLDER_CERTIFICATIONS,
 } from '@/lib/placeholder-data';
 
 export function Certifications() {
   const shouldReduceMotion = useReducedMotion();
+  const { language } = useLanguage();
+  const { t } = useTranslation();
 
   return (
     <SectionContainer id="certifications">
       <SectionHeading
-        eyebrow="Certifications"
-        title="Certifications & Education"
+        eyebrow={t('certifications.eyebrow')}
+        title={t('certifications.title')}
       />
 
       <motion.div
@@ -32,6 +37,12 @@ export function Certifications() {
       >
         {PLACEHOLDER_CERTIFICATIONS.map((cert) => {
           const Icon = getCertificationIcon(cert);
+          const title = pickBilingual(cert.title, cert.title_bn, language);
+          const organization = pickBilingual(
+            cert.issuing_organization,
+            cert.issuing_organization_bn,
+            language
+          );
 
           return (
             <motion.div key={cert.id} variants={fadeInUp}>
@@ -42,10 +53,10 @@ export function Certifications() {
 
                 <div className="flex-1">
                   <h3 className="text-base font-semibold text-foreground">
-                    {cert.title}
+                    {title}
                   </h3>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {cert.issuing_organization}
+                    {organization}
                   </p>
                   {cert.issue_date && (
                     <p className="mt-1 text-xs text-muted-foreground">
@@ -66,7 +77,7 @@ export function Certifications() {
                     })}
                   >
                     <ExternalLink className="mr-1.5 h-3.5 w-3.5" aria-hidden />
-                    View Credential
+                    {t('certifications.viewCredential')}
                   </a>
                 )}
               </BentoCard>

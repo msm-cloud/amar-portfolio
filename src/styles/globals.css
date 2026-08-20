@@ -102,7 +102,11 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-ring: var(--ring);
 
-  --font-sans: var(--font-geist-sans);
+  /* Noto Sans Bengali as a fallback, not a swap: Geist has zero Bengali
+     glyphs, so the browser's own per-character font substitution already
+     renders any Bangla text with this font automatically, with no JS
+     needed to react to the language toggle. */
+  --font-sans: var(--font-geist-sans), var(--font-noto-bengali);
   --font-mono: var(--font-geist-mono);
 }
 

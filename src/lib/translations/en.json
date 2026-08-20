@@ -1,0 +1,82 @@
+{
+  "nav": {
+    "about": "About",
+    "skills": "Skills",
+    "projects": "Projects",
+    "experience": "Experience",
+    "certifications": "Certifications",
+    "contact": "Contact",
+    "resume": "Resume",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mobileNav": "Mobile"
+  },
+  "hero": {
+    "viewProjects": "View Projects",
+    "downloadResume": "Download Resume"
+  },
+  "about": {
+    "eyebrow": "About Me",
+    "title": "A blend of engineering, design, and financial-sector discipline",
+    "description": "A quick overview of my background — the full story, projects, and skills breakdown live further down the page."
+  },
+  "skills": {
+    "eyebrow": "Skills",
+    "title": "Tools & Technologies I Work With",
+    "description": "Grouped by area — hover a card for the exact skill name if the icon alone isn't obvious.",
+    "levels": {
+      "1": "Beginner",
+      "2": "Familiar",
+      "3": "Intermediate",
+      "4": "Advanced",
+      "5": "Expert"
+    }
+  },
+  "projects": {
+    "eyebrow": "Projects",
+    "title": "Selected Work",
+    "description": "A mix of client web development, personal projects, and graphic design — spanning the financial sector and beyond.",
+    "backToProjects": "Back to Projects",
+    "liveSite": "Live Site",
+    "viewCode": "View Code"
+  },
+  "experience": {
+    "eyebrow": "Experience",
+    "title": "Career Journey",
+    "present": "Present"
+  },
+  "certifications": {
+    "eyebrow": "Certifications",
+    "title": "Certifications & Education",
+    "viewCredential": "View Credential"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Let's Work Together",
+    "description": "Have a project in mind, or just want to say hello? Send a message and I'll get back to you soon.",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "subjectLabel": "Subject (optional)",
+    "messageLabel": "Message",
+    "sendButton": "Send Message",
+    "sendingButton": "Sending…",
+    "successTitle": "Message sent",
+    "success": "Thanks! I'll get back to you soon.",
+    "errors": {
+      "name": "Please enter your name (max 120 characters).",
+      "email": "Please enter a valid email address.",
+      "subject": "Subject is too long (max 200 characters).",
+      "messageTooShort": "Please enter a message of at least 10 characters.",
+      "messageTooLong": "Message is too long (max 5000 characters).",
+      "rateLimited": "You're submitting a bit too quickly — please wait a minute and try again.",
+      "generic": "Something went wrong saving your message. Please try again in a moment."
+    }
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "rightsReserved": "All rights reserved."
+  },
+  "language": {
+    "toggleLabel": "Switch language"
+  }
+}
