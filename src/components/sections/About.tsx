@@ -7,6 +7,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 import { pickText, useLanguage, type Bilingual } from '@/lib/language-context';
 import { useTranslation } from '@/lib/use-translation';
+import { GithubActivityCard } from './GithubActivityCard';
 
 const BIO: Bilingual = {
   en: "I'm a web developer and graphic designer who also spent years in financial-sector administration — a combination that shapes how I build. I care about interfaces that are not just visually polished but genuinely dependable under real operational load, the same standard I held to when handling day-to-day financial operations. I work across the full stack, from backend data models to pixel-level design details. My goal on every project is software that a financial institution could actually trust in production, not just a portfolio piece.",
@@ -78,6 +79,10 @@ export function About() {
             </BentoCard>
           </motion.div>
         ))}
+
+        <motion.div variants={fadeInUp} className="sm:col-span-3">
+          <GithubActivityCard />
+        </motion.div>
       </motion.div>
     </SectionContainer>
   );

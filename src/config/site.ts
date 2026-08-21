@@ -8,9 +8,19 @@ import type { NavItem, SocialLink } from '@/types';
  */
 
 export const siteConfig = {
+  // Header/Footer brand wordmark - NOT the SEO <title> (see seoTitle
+  // below). Keep these decoupled: the wordmark is short site branding,
+  // the SEO title is a full "Name — role" string search engines and
+  // share-link previews actually show.
   name: 'Amar Portfolio',
-  description: 'Professional portfolio website.',
-  url: 'https://example.com',
+  ownerName: 'Shahid',
+  seoTitle: 'Shahid — Web Developer & Graphic Designer',
+  description:
+    'Portfolio of Shahid, a web developer and graphic designer with financial-sector operations experience, showcasing projects, skills, and writing.',
+  // PLACEHOLDER - update to the real Vercel production domain once
+  // deployed (used for metadataBase, Open Graph/Twitter absolute URLs,
+  // and sitemap.ts/robots.ts).
+  url: 'https://amar-portfolio.vercel.app',
 };
 
 // Homepage-section items use a "/#section" href (not a bare "#section") -
