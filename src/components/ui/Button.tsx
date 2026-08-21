@@ -38,7 +38,12 @@ export function buttonVariants({
   className?: string;
 } = {}) {
   return cn(
-    'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60',
+    // transition-all (not transition-colors) so both the variant's own
+    // background/border hover AND the scale hover/press below animate
+    // smoothly - transition-property utilities replace each other rather
+    // than combining, so a plain transition-colors here would leave the
+    // scale snapping instantly instead of easing.
+    'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100',
     VARIANT_CLASSES[variant],
     SIZE_CLASSES[size],
     className

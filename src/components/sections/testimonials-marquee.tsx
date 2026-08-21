@@ -44,7 +44,7 @@ function TestimonialCard({
     .join(' · ');
 
   return (
-    <GlassCard className="flex w-80 shrink-0 flex-col gap-4 sm:w-96">
+    <GlassCard className="flex w-80 shrink-0 flex-col gap-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl sm:w-96">
       <p className="text-sm leading-relaxed text-foreground">
         &ldquo;{content}&rdquo;
       </p>

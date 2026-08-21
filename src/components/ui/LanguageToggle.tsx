@@ -18,7 +18,7 @@ export function LanguageToggle({ className }: { className?: string }) {
       onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
       aria-label={t('language.toggleLabel')}
       className={cn(
-        'inline-flex h-9 items-center justify-center gap-1 rounded-lg border border-border px-2.5 text-xs font-semibold transition-colors hover:bg-muted',
+        'inline-flex h-9 items-center justify-center gap-1 rounded-lg border border-border px-2.5 text-xs font-semibold transition-colors duration-200 hover:border-primary/40 hover:bg-muted',
         className
       )}
     >
