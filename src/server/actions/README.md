@@ -6,6 +6,19 @@ directly from Client/Server Components.
 
 - `auth.ts` — `signIn` (paired with `useActionState` in the login form) and
   `signOut` (used directly as a `<form action={signOut}>`).
+  `changePassword` (paired with `useActionState` in `ChangePasswordForm`,
+  `/admin/settings`) changes the *currently signed-in* user's password via
+  `supabase.auth.updateUser` - no separate current-password check, since
+  the session cookie already proves who they are. `requestPasswordReset`
+  (paired with `useActionState` in `/admin/forgot-password`) calls
+  `supabase.auth.resetPasswordForEmail`, always returning the same
+  generic "if that email exists…" message regardless of whether the
+  email has an account or Supabase itself errored - same reasoning as
+  `signIn`'s generic "Invalid email or password." There's no
+  `resetPassword`-the-actual-password-change action here - that happens
+  entirely client-side in `reset-password-form.tsx`, since the recovery
+  session it needs only ever exists in the browser (see that file's own
+  comment).
 - `contact.ts` — `submitContactForm` (paired with `useActionState` in the
   Contact section: validates, saves to `contact_messages`, sends a Resend
   notification email, and has its own basic in-memory rate limiter) and

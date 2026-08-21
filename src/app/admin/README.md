@@ -3,10 +3,22 @@
 Admin dashboard, protected by Supabase Auth (see `proxy.ts` /
 `src/lib/supabase/proxy.ts`). Every route under here requires a
 signed-in user whose `profiles.role` is `'admin'` or `'editor'`, **except**
-`login/`.
+`login/`, `forgot-password/`, and `reset-password/`.
 
 - `login/page.tsx` — sign-in form (no public signup; accounts are created
-  manually via the Supabase Dashboard).
+  manually via the Supabase Dashboard). Has a "Forgot password?" link to
+  `forgot-password/`, and shows a success banner after a completed
+  password reset (`?message=password_reset`).
+- `forgot-password/page.tsx` — email-only form; always shows the same
+  generic "if that email exists…" message regardless of whether the
+  email actually has an account (see `requestPasswordReset` in
+  `server/actions/auth.ts`).
+- `reset-password/page.tsx` — where the reset email's link lands. Handled
+  entirely client-side (`reset-password-form.tsx`) rather than a Server
+  Action - see that file's own comment for why the recovery token can
+  only ever be read in the browser. On success, signs out of the
+  temporary recovery session and sends the admin back to `/admin/login`
+  to sign in fresh with the new password.
 - `layout.tsx` — sidebar/header shell wrapping all authenticated admin
   pages (renders bare, with no chrome, for the unauthenticated login page).
 - `dashboard/page.tsx` — landing page after sign-in: `AdminWelcomeCard`
@@ -59,4 +71,7 @@ signed-in user whose `profiles.role` is `'admin'` or `'editor'`, **except**
   not a separate client-side upload step. A resume PDF upload works the
   same way, into the `resume` bucket - PDF-only, no compression step
   (nothing to resize/re-encode), shows a "View current resume" link when
-  one's already been uploaded.
+  one's already been uploaded. Also renders `ChangePasswordForm` in its
+  own `GlassCard`, unrelated to `site_settings` (so it still renders even
+  if that table's query fails) - New/Confirm password, `changePassword`
+  in `server/actions/auth.ts`.
