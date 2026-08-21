@@ -1,6 +1,7 @@
 'use client';
 
 import { Briefcase, Code2, Mail, Share2, type LucideIcon } from 'lucide-react';
+import { SectionNavLink } from '@/components/ui/SectionNavLink';
 import { navItems, siteConfig, socialLinks } from '@/config/site';
 import { useTranslation } from '@/lib/use-translation';
 
@@ -67,13 +68,13 @@ export function Footer() {
             className="flex flex-wrap gap-x-6 gap-y-2"
           >
             {navItems.map((item) => (
-              <a
+              <SectionNavLink
                 key={item.href}
-                href={item.href}
+                item={item}
                 className="text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
                 {t(`nav.${item.key ?? item.label.toLowerCase()}`)}
-              </a>
+              </SectionNavLink>
             ))}
           </nav>
         </div>
