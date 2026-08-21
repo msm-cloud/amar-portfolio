@@ -109,6 +109,25 @@
      needed to react to the language toggle. */
   --font-sans: var(--font-geist-sans), var(--font-noto-bengali);
   --font-mono: var(--font-geist-mono);
+
+  /* Testimonials marquee. Duration is a CSS variable (not a fixed value)
+     so a component can override --marquee-duration per breakpoint (e.g.
+     slower on mobile) with a plain Tailwind arbitrary-property utility,
+     no JS involved. The component itself decides whether to render this
+     at all - see Testimonials.tsx's prefers-reduced-motion branch. */
+  --animate-marquee: marquee var(--marquee-duration, 45s) linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Track is the testimonial list duplicated once, back to back, so
+       -50% lands exactly on the start of the duplicate - the loop point
+       is invisible. */
+    transform: translateX(-50%);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

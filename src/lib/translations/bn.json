@@ -5,6 +5,7 @@
     "projects": "প্রজেক্ট",
     "experience": "অভিজ্ঞতা",
     "certifications": "সার্টিফিকেশন",
+    "testimonials": "মতামত",
     "blog": "ব্লগ",
     "contact": "যোগাযোগ",
     "resume": "জীবনবৃত্তান্ত",
@@ -50,6 +51,10 @@
     "eyebrow": "সার্টিফিকেশন",
     "title": "সার্টিফিকেশন ও শিক্ষাগত যোগ্যতা",
     "viewCredential": "সনদ দেখুন"
+  },
+  "testimonials": {
+    "eyebrow": "মতামত",
+    "title": "মানুষ যা বলছেন"
   },
   "contact": {
     "eyebrow": "যোগাযোগ",
