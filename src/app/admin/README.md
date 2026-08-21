@@ -9,7 +9,14 @@ signed-in user whose `profiles.role` is `'admin'` or `'editor'`, **except**
   manually via the Supabase Dashboard).
 - `layout.tsx` — sidebar/header shell wrapping all authenticated admin
   pages (renders bare, with no chrome, for the unauthenticated login page).
-- `dashboard/page.tsx` — placeholder landing page after sign-in.
+- `dashboard/page.tsx` — landing page after sign-in: `AdminWelcomeCard`
+  (profile photo from `site_settings` - falls back to initials - name,
+  role badge, and a time-of-day greeting computed client-side, since the
+  server's clock isn't the admin's local time), a row of live stat cards
+  (Projects/Blog Posts published-vs-draft, unread Messages - clickable,
+  through to `/admin/messages` - and a combined Skills/Testimonials/
+  Certifications count), and a small Recent Messages preview (skipped
+  entirely if there are no messages yet).
 - `messages/page.tsx` — lists `contact_messages` (newest first); click a
   row to expand it and mark it read.
 - `projects/page.tsx` — lists all `projects` (draft and published);
