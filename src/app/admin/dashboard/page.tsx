@@ -102,7 +102,7 @@ export default async function DashboardPage() {
         </BentoCard>
 
         <Link href="/admin/messages" className="block h-full">
-          <BentoCard className="flex h-full flex-col gap-2 transition-shadow hover:shadow-md">
+          <BentoCard className="flex h-full flex-col gap-2 hover:-translate-y-1">
             <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Mail className="h-5 w-5" aria-hidden />
             </span>

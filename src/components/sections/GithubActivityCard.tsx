@@ -37,13 +37,13 @@ export function GithubActivityCard() {
         href={`https://github.com/${GITHUB_USERNAME}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex w-fit items-center gap-2"
+        className="group flex w-fit items-center gap-2"
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors duration-200 group-hover:bg-primary/20">
           <Code2 className="h-4 w-4" aria-hidden />
         </span>
         <div>
-          <h3 className="text-sm font-semibold text-foreground">
+          <h3 className="text-sm font-semibold text-foreground transition-colors duration-200 group-hover:text-primary">
             {t('github.heading')}
           </h3>
           <p className="text-xs text-muted-foreground">

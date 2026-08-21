@@ -108,13 +108,24 @@ export function Header() {
                 key={item.href}
                 item={item}
                 className={cn(
-                  'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                  // group + relative: the underline span below is
+                  // positioned/animated off this link, not the active
+                  // state - active is a solid primary color with no
+                  // underline, hover adds the underline on top of
+                  // whichever color state it's already in, so the two
+                  // stay visually distinct but share the same primary
+                  // color language.
+                  'group relative rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200',
                   isActive
                     ? 'text-primary'
-                    : 'text-muted-foreground hover:text-foreground'
+                    : 'text-muted-foreground hover:text-primary'
                 )}
               >
                 {t(`nav.${item.key ?? item.label.toLowerCase()}`)}
+                <span
+                  aria-hidden
+                  className="absolute inset-x-3 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full bg-primary transition-transform duration-200 group-hover:scale-x-100"
+                />
               </SectionNavLink>
             );
           })}
@@ -172,10 +183,10 @@ export function Header() {
                     item={item}
                     onNavigate={() => setIsMobileMenuOpen(false)}
                     className={cn(
-                      'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                      'rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200',
                       isActive
                         ? 'bg-primary/10 text-primary'
-                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        : 'text-muted-foreground hover:bg-muted hover:text-primary'
                     )}
                   >
                     {t(`nav.${item.key ?? item.label.toLowerCase()}`)}

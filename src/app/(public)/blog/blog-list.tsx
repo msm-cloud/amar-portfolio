@@ -53,7 +53,7 @@ export function BlogList({
       {posts.map((post) => (
         <motion.div key={post.id} variants={fadeInUp}>
           <Link href={`/blog/${post.slug}`} className="block h-full">
-            <BentoCard className="h-full overflow-hidden">
+            <BentoCard className="h-full overflow-hidden hover:-translate-y-1">
               <div className="-m-6 mb-4">
                 <CoverImage
                   src={post.cover_image_url}

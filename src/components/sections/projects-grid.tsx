@@ -46,7 +46,7 @@ function ProjectCard({
 
   return (
     <Link href={`/projects/${project.slug}`} className="block h-full">
-      <BentoCard className="h-full overflow-hidden">
+      <BentoCard className="h-full overflow-hidden hover:-translate-y-1">
         <div className="-m-6 mb-4">
           <CoverImage
             src={project.cover_image_url}
