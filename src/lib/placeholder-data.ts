@@ -40,8 +40,6 @@ import type { Language } from '@/lib/language-context';
  * actually used in this placeholder data instead.
  */
 
-const now = '2026-01-01T00:00:00.000Z';
-
 /** Reads the right language out of a `{ field, field_bn }` pair, falling
  * back to English if a Bangla value isn't set (matches how a real CMS
  * with partially-translated content would behave). */
@@ -57,143 +55,14 @@ export function pickBilingual(
 // ============================================================================
 // Projects
 // ============================================================================
-
-export type PlaceholderProject =
-  Database['public']['Tables']['projects']['Row'];
-
-export const PLACEHOLDER_PROJECTS: PlaceholderProject[] = [
-  {
-    id: 'proj-nexabank-dashboard',
-    title: 'NexaBank Digital Operations Dashboard',
-    title_bn: 'নেক্সাব্যাংক ডিজিটাল অপারেশনস ড্যাশবোর্ড',
-    slug: 'nexabank-digital-operations-dashboard',
-    description:
-      'An internal web dashboard for daily branch operations — transaction monitoring, reconciliation, and reporting in one place.',
-    description_bn:
-      'দৈনন্দিন শাখা কার্যক্রমের জন্য একটি অভ্যন্তরীণ ওয়েব ড্যাশবোর্ড — লেনদেন পর্যবেক্ষণ, মিলকরণ এবং প্রতিবেদন একই জায়গায়।',
-    content:
-      "Built for a mid-sized retail bank's operations team to replace a spreadsheet-driven workflow. The dashboard surfaces daily transaction volume, flags reconciliation mismatches automatically, and generates the end-of-day report that used to take an analyst most of an afternoon to assemble by hand.\n\nThe brief came directly from spending years on the operations side of financial-sector work myself: the dashboard is built around the reports and checks an ops team actually runs every day, not a generic admin template. Role-based access keeps branch staff, supervisors, and auditors each seeing only what's relevant to them.\n\nStack: Next.js App Router, Supabase (Postgres + Row Level Security for the role-based access), TypeScript throughout, Tailwind CSS for the UI.",
-    content_bn:
-      'একটি মাঝারি আকারের রিটেইল ব্যাংকের অপারেশনস টিমের জন্য তৈরি, যা স্প্রেডশিট-নির্ভর কর্মপ্রবাহ প্রতিস্থাপন করে। ড্যাশবোর্ডটি দৈনিক লেনদেনের পরিমাণ প্রদর্শন করে, মিলকরণের অসামঞ্জস্য স্বয়ংক্রিয়ভাবে চিহ্নিত করে, এবং দিন-শেষের প্রতিবেদন তৈরি করে যা আগে একজন বিশ্লেষকের প্রায় পুরো বিকেল সময় নিত।\n\nএই প্রকল্পের ধারণা এসেছে সরাসরি আর্থিক খাতে বছরের পর বছর অপারেশন সাইডে কাজ করার অভিজ্ঞতা থেকে: ড্যাশবোর্ডটি একটি সাধারণ অ্যাডমিন টেমপ্লেট নয়, বরং একটি অপারেশনস টিম প্রতিদিন যেসব প্রতিবেদন ও যাচাই পরিচালনা করে তার ভিত্তিতে তৈরি। ভূমিকা-ভিত্তিক অ্যাক্সেস নিশ্চিত করে যে শাখার কর্মী, সুপারভাইজার এবং অডিটররা প্রত্যেকে শুধু তাদের প্রাসঙ্গিক তথ্যই দেখতে পান।\n\nস্ট্যাক: Next.js App Router, Supabase (Postgres + ভূমিকা-ভিত্তিক অ্যাক্সেসের জন্য Row Level Security), সম্পূর্ণ TypeScript, UI-এর জন্য Tailwind CSS।',
-    category: 'Web Development',
-    tags: ['Next.js', 'Supabase', 'TypeScript', 'Banking'],
-    cover_image_url: null,
-    project_url: 'https://example.com',
-    github_url: 'https://github.com/example/nexabank-dashboard',
-    is_featured: true,
-    display_order: 1,
-    status: 'published',
-    created_by: null,
-    created_at: now,
-    updated_at: now,
-  },
-  {
-    id: 'proj-meghna-microfinance',
-    title: 'Meghna Microfinance Loan Portal',
-    title_bn: 'মেঘনা মাইক্রোফাইন্যান্স লোন পোর্টাল',
-    slug: 'meghna-microfinance-loan-portal',
-    description:
-      'A client-facing portal for a microfinance institution to manage loan applications, repayment schedules, and disbursement status.',
-    description_bn:
-      'একটি মাইক্রোফাইন্যান্স প্রতিষ্ঠানের জন্য একটি ক্লায়েন্ট-মুখী পোর্টাল, যেখানে ঋণ আবেদন, পরিশোধের সময়সূচি এবং বিতরণের অবস্থা পরিচালনা করা যায়।',
-    content:
-      "A microfinance institution needed to move loan applications online without asking rural and semi-urban borrowers to navigate anything complicated. The result is a deliberately simple, mobile-first portal: applicants track their application status, view their repayment schedule, and get notified of disbursement, all in a handful of clear screens.\n\nBehind the scenes, staff manage the underwriting workflow through a matching internal panel, backed by the same database. Repayment schedule calculations follow the institution's actual amortization rules rather than a generic formula.\n\nStack: React, Node.js, PostgreSQL. Delivered as a client project — source is private, but the live portal is linked below.",
-    content_bn:
-      'একটি মাইক্রোফাইন্যান্স প্রতিষ্ঠানের প্রয়োজন ছিল ঋণ আবেদন অনলাইনে নিয়ে আসা, তবে গ্রামীণ ও আধা-শহুরে ঋণগ্রহীতাদের জটিল কিছু ব্যবহার করতে না বলে। ফলাফল হলো একটি ইচ্ছাকৃতভাবে সহজ, মোবাইল-ফার্স্ট পোর্টাল: আবেদনকারীরা তাদের আবেদনের অবস্থা দেখতে পান, পরিশোধের সময়সূচি দেখতে পান এবং বিতরণের বিজ্ঞপ্তি পান — সবকিছুই কয়েকটি স্পষ্ট স্ক্রিনে।\n\nপর্দার আড়ালে, কর্মীরা একই ডেটাবেজ-ভিত্তিক একটি মিলযুক্ত অভ্যন্তরীণ প্যানেলের মাধ্যমে আন্ডাররাইটিং কর্মপ্রবাহ পরিচালনা করেন। পরিশোধের সময়সূচির হিসাব প্রতিষ্ঠানের প্রকৃত অ্যামর্টাইজেশন নিয়ম অনুসরণ করে, কোনো সাধারণ সূত্র নয়।\n\nস্ট্যাক: React, Node.js, PostgreSQL। একটি ক্লায়েন্ট প্রকল্প হিসেবে সরবরাহ করা হয়েছে — সোর্স কোড প্রাইভেট, তবে লাইভ পোর্টালের লিংক নিচে দেওয়া আছে।',
-    category: 'Web Development',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'Finance'],
-    cover_image_url: null,
-    project_url: 'https://example.com',
-    github_url: null,
-    is_featured: true,
-    display_order: 2,
-    status: 'published',
-    created_by: null,
-    created_at: now,
-    updated_at: now,
-  },
-  {
-    id: 'proj-aranya-brand-identity',
-    title: 'Aranya Handicrafts Brand Identity',
-    title_bn: 'অরণ্য হ্যান্ডিক্রাফটস ব্র্যান্ড আইডেন্টিটি',
-    slug: 'aranya-handicrafts-brand-identity',
-    description:
-      'Full brand identity for an artisan handicrafts cooperative — logo, color system, packaging, and a printed catalog.',
-    description_bn:
-      'একটি কারুশিল্প সমবায়ের জন্য সম্পূর্ণ ব্র্যান্ড আইডেন্টিটি — লোগো, রঙের সিস্টেম, প্যাকেজিং এবং একটি মুদ্রিত ক্যাটালগ।',
-    content:
-      "A handicrafts cooperative needed a brand identity that felt handmade and warm without looking amateur — a common tension for artisan brands competing against mass-market packaging. The mark draws on traditional weaving patterns, translated into a simple geometric logotype that still reproduces cleanly at small sizes (a tag on a woven basket, a stamp on a box).\n\nDeliverables covered the full identity system: logo and variations, a color palette pulled from the cooperative's actual dye materials, packaging templates, and a printed product catalog for trade shows.\n\nTools: Illustrator for the mark and vector system, Photoshop for photography retouching and packaging mockups.",
-    content_bn:
-      'একটি কারুশিল্প সমবায়ের এমন একটি ব্র্যান্ড আইডেন্টিটি দরকার ছিল যা হাতে তৈরি ও উষ্ণ অনুভূত হবে, কিন্তু অপেশাদার দেখাবে না — কারুশিল্প ব্র্যান্ডগুলোর জন্য এটি একটি সাধারণ চ্যালেঞ্জ, যখন তারা ব্যাপক-বাজারের প্যাকেজিংয়ের বিরুদ্ধে প্রতিযোগিতা করে। এই লোগোটি ঐতিহ্যবাহী বুনন নকশা থেকে অনুপ্রাণিত, যা একটি সরল জ্যামিতিক লোগোটাইপে রূপান্তরিত হয়েছে যা ছোট আকারেও স্পষ্টভাবে ফুটে ওঠে (একটি বোনা ঝুড়ির ট্যাগে, বা একটি বাক্সের স্ট্যাম্পে)।\n\nডেলিভারেবলসের মধ্যে ছিল সম্পূর্ণ আইডেন্টিটি সিস্টেম: লোগো ও এর ভ্যারিয়েশন, সমবায়ের প্রকৃত রঞ্জক উপাদান থেকে নেওয়া একটি রঙের প্যালেট, প্যাকেজিং টেমপ্লেট এবং ট্রেড শোর জন্য একটি মুদ্রিত পণ্য ক্যাটালগ।\n\nটুলস: লোগো ও ভেক্টর সিস্টেমের জন্য Illustrator, ফটোগ্রাফি রিটাচিং ও প্যাকেজিং মকআপের জন্য Photoshop।',
-    category: 'Design',
-    tags: ['Branding', 'Illustrator', 'Photoshop'],
-    cover_image_url: null,
-    project_url: null,
-    github_url: null,
-    is_featured: false,
-    display_order: 3,
-    status: 'published',
-    created_by: null,
-    created_at: now,
-    updated_at: now,
-  },
-  {
-    id: 'proj-personal-budget-tracker',
-    title: 'Personal Budget Tracker',
-    title_bn: 'পার্সোনাল বাজেট ট্র্যাকার',
-    slug: 'personal-budget-tracker',
-    description:
-      'An open-source personal finance app for tracking spending against monthly budgets by category, with simple charts.',
-    description_bn:
-      'একটি ওপেন-সোর্স ব্যক্তিগত অর্থ ব্যবস্থাপনা অ্যাপ, যা ক্যাটাগরি অনুযায়ী মাসিক বাজেটের বিপরীতে খরচ ট্র্যাক করে, সাথে সহজ চার্ট।',
-    content:
-      "A side project born out of wanting a budgeting app that does exactly one thing well: compare actual spending against a monthly budget, per category, without the account-linking, subscriptions, or feature bloat of most commercial budgeting apps.\n\nEntries are logged manually (by design — it keeps the data model simple and avoids bank-linking security concerns entirely), categorized, and charted against each category's monthly limit. Built and open-sourced as a way to keep React and Tailwind skills sharp between client work.\n\nStack: React, Tailwind CSS, stored locally in the browser (no backend required).",
-    content_bn:
-      'একটি সাইড প্রজেক্ট, যার জন্ম হয়েছিল এমন একটি বাজেটিং অ্যাপের প্রয়োজন থেকে যা একটি কাজ ভালোভাবে করে: ক্যাটাগরি অনুযায়ী প্রকৃত খরচকে মাসিক বাজেটের বিপরীতে তুলনা করা — বেশিরভাগ কমার্শিয়াল বাজেটিং অ্যাপের অ্যাকাউন্ট-লিংকিং, সাবস্ক্রিপশন বা অতিরিক্ত ফিচার ছাড়াই।\n\nএন্ট্রিগুলো ম্যানুয়ালি লগ করা হয় (ইচ্ছাকৃতভাবে — এটি ডেটা মডেলকে সহজ রাখে এবং ব্যাংক-লিংকিং সংক্রান্ত নিরাপত্তা উদ্বেগ সম্পূর্ণভাবে এড়িয়ে যায়), ক্যাটাগরাইজ করা হয় এবং প্রতিটি ক্যাটাগরির মাসিক সীমার বিপরীতে চার্ট করা হয়। ক্লায়েন্ট কাজের ফাঁকে React ও Tailwind দক্ষতা ধরে রাখার একটি উপায় হিসেবে তৈরি ও ওপেন-সোর্স করা হয়েছে।\n\nস্ট্যাক: React, Tailwind CSS, ব্রাউজারে স্থানীয়ভাবে সংরক্ষিত (কোনো ব্যাকএন্ড প্রয়োজন নেই)।',
-    category: 'Web App',
-    tags: ['React', 'Tailwind CSS'],
-    cover_image_url: null,
-    project_url: 'https://example.com',
-    github_url: 'https://github.com/example/personal-budget-tracker',
-    is_featured: false,
-    display_order: 4,
-    status: 'published',
-    created_by: null,
-    created_at: now,
-    updated_at: now,
-  },
-  {
-    id: 'proj-city-savings-print-campaign',
-    title: 'City Savings Cooperative — Print Campaign',
-    title_bn: 'সিটি সেভিংস কো-অপারেটিভ — প্রিন্ট ক্যাম্পেইন',
-    slug: 'city-savings-cooperative-print-campaign',
-    description:
-      'A print and in-branch campaign encouraging members to switch to paperless statements, designed for a savings cooperative.',
-    description_bn:
-      'একটি সেভিংস কো-অপারেটিভের জন্য ডিজাইন করা একটি প্রিন্ট ও ইন-ব্রাঞ্চ ক্যাম্পেইন, যা সদস্যদের পেপারলেস স্টেটমেন্টে যেতে উৎসাহিত করে।',
-    content:
-      "A savings cooperative wanted to move more members onto paperless statements ahead of a system migration, but their existing member base skewed toward people who trusted paper. The campaign leaned into that directly rather than fighting it: plain-language posters and flyers explaining exactly what would (and wouldn't) change, distributed across branch locations and mailed with the final paper statement.\n\nDesign work covered the full print set — branch posters, counter flyers, and statement-insert cards — kept consistent with the cooperative's existing brand rather than introducing a new visual identity.\n\nTools: InDesign for layout, Illustrator for supporting iconography.",
-    content_bn:
-      'একটি সেভিংস কো-অপারেটিভ চেয়েছিল সিস্টেম মাইগ্রেশনের আগে আরও বেশি সদস্যকে পেপারলেস স্টেটমেন্টে নিয়ে যেতে, কিন্তু তাদের বিদ্যমান সদস্যরা মূলত কাগজে বিশ্বাসী ছিলেন। ক্যাম্পেইনটি এই বিষয়টিকে সরাসরি মোকাবিলা করেছে, এড়িয়ে না গিয়ে: সহজ ভাষায় পোস্টার ও ফ্লায়ার, যা স্পষ্টভাবে ব্যাখ্যা করে কী পরিবর্তন হবে (এবং কী হবে না), যা শাখাগুলোতে বিতরণ করা হয়েছে এবং চূড়ান্ত কাগজের স্টেটমেন্টের সাথে মেইল করা হয়েছে।\n\nডিজাইনের কাজের মধ্যে ছিল সম্পূর্ণ প্রিন্ট সেট — শাখার পোস্টার, কাউন্টার ফ্লায়ার এবং স্টেটমেন্ট-ইনসার্ট কার্ড — যা সমবায়ের বিদ্যমান ব্র্যান্ডের সাথে সামঞ্জস্যপূর্ণ রাখা হয়েছে, নতুন কোনো ভিজ্যুয়াল আইডেন্টিটি প্রবর্তন না করে।\n\nটুলস: লেআউটের জন্য InDesign, সহায়ক আইকনোগ্রাফির জন্য Illustrator।',
-    category: 'Design',
-    tags: ['Print Design', 'InDesign', 'Branding', 'Finance'],
-    cover_image_url: null,
-    project_url: null,
-    github_url: null,
-    is_featured: false,
-    display_order: 5,
-    status: 'published',
-    created_by: null,
-    created_at: now,
-    updated_at: now,
-  },
-];
-
-export function getPlaceholderProjectBySlug(
-  slug: string
-): PlaceholderProject | undefined {
-  return PLACEHOLDER_PROJECTS.find((project) => project.slug === slug);
-}
+//
+// The placeholder project array itself has been retired - Projects.tsx and
+// /projects/[slug] now read real rows from Supabase (see
+// supabase/seed_projects.sql for the one-time script that seeds the same
+// 5 projects that used to live here as static data). getCategoryIcon and
+// translateCategory below are still generic, data-source-agnostic helpers
+// used by both the real Projects section and Skills.tsx's categories, so
+// they stay.
 
 /** Best-effort icon for a project's cover-image fallback, based on category. */
 export function getCategoryIcon(category: string | null): LucideIcon {

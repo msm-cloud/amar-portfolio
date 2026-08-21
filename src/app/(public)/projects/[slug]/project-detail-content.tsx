@@ -8,21 +8,23 @@ import { CoverImage } from '@/components/ui/CoverImage';
 import { SectionContainer } from '@/components/ui/SectionContainer';
 import { useLanguage } from '@/lib/language-context';
 import { useTranslation } from '@/lib/use-translation';
-import {
-  getCategoryIcon,
-  pickBilingual,
-  translateCategory,
-  type PlaceholderProject,
-} from '@/lib/placeholder-data';
+import { getCategoryIcon, pickBilingual, translateCategory } from '@/lib/placeholder-data';
+import type { Database } from '@/types/database';
+
+type ProjectRow = Database['public']['Tables']['projects']['Row'];
 
 // Client Component so it can read the language toggle - split out from
 // page.tsx (a Server Component, which handles data fetching / notFound()
-// / generateMetadata / generateStaticParams) rather than converting the
-// whole page, keeping that server-side plumbing simple.
+// / generateMetadata / generateStaticParams / HTML sanitizing) rather
+// than converting the whole page, same reason as the blog post page.
 export function ProjectDetailContent({
   project,
+  safeContentHtml,
+  safeContentBnHtml,
 }: {
-  project: PlaceholderProject;
+  project: ProjectRow;
+  safeContentHtml: string;
+  safeContentBnHtml: string | null;
 }) {
   const { language } = useLanguage();
   const { t } = useTranslation();
@@ -32,14 +34,12 @@ export function ProjectDetailContent({
   const description = project.description
     ? pickBilingual(project.description, project.description_bn, language)
     : null;
-  const content = pickBilingual(
-    project.content ?? '',
-    project.content_bn,
-    language
-  );
-  // Placeholder content uses "\n\n" as a paragraph break; a real rich-text
-  // field (HTML from an editor) will replace this rendering entirely.
-  const paragraphs = content.split('\n\n').filter((p) => p.trim().length > 0);
+  // Falls back to the English content whenever a project has no Bangla
+  // content filled in yet, rather than showing blank text - same
+  // fallback semantics as pickBilingual, applied to the pre-sanitized
+  // HTML strings instead of plain content_bn/content.
+  const contentHtml =
+    language === 'bn' && safeContentBnHtml ? safeContentBnHtml : safeContentHtml;
 
   return (
     <main className="flex flex-1 flex-col">
@@ -105,16 +105,10 @@ export function ProjectDetailContent({
           </div>
         )}
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-border pt-8">
-          {paragraphs.map((paragraph, i) => (
-            <p
-              key={i}
-              className="leading-relaxed text-foreground/90 whitespace-pre-line"
-            >
-              {paragraph}
-            </p>
-          ))}
-        </div>
+        <div
+          className="prose prose-neutral dark:prose-invert mt-10 max-w-none border-t border-border pt-8"
+          dangerouslySetInnerHTML={{ __html: contentHtml }}
+        />
       </SectionContainer>
     </main>
   );

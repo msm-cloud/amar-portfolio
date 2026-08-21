@@ -18,5 +18,14 @@ directly from Client/Server Components.
   (called directly, like `markContactMessageAsRead`). Authorization for
   all three is RLS (`blog_posts_write_admin_editor`), not anything
   checked in these functions themselves.
+- `projects.ts` — `createProject` / `updateProject` (same
+  `useActionState` + `.bind(null, id)` pattern as blog.ts) and
+  `deleteProject` (called directly). Also `moveProject(id, direction)`
+  (called directly from the admin list's up/down buttons) — re-numbers
+  every row's `display_order` to its new index rather than swapping two
+  rows' raw values, so a move is never a silent no-op when two rows
+  already share the same `display_order`. Authorization is RLS
+  (`projects_write_admin_editor`).
 
-More will be added in later steps (Projects/Skills/etc. admin CRUD).
+More will be added in later steps (Skills/Experience/Certifications/
+Testimonials admin CRUD).

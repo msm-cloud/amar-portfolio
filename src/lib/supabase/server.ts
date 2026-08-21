@@ -39,6 +39,21 @@ export async function createClient() {
 }
 
 /**
+ * Anonymous, cookie-free Supabase client for build-time contexts like
+ * `generateStaticParams` - Next.js explicitly disallows calling cookies()
+ * there (it runs at build time, outside any HTTP request, so there's no
+ * cookie jar to read). Uses the public anon key, so it's equivalent in
+ * privilege to what an anonymous visitor's request would see - public-read
+ * RLS policies (e.g. `projects_select_published`) still apply.
+ */
+export function createStaticClient() {
+  return createSupabaseJsClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
+
+/**
  * Service-role Supabase client for trusted, server-only operations that
  * must bypass Row Level Security (e.g. admin scripts, background jobs).
  *
