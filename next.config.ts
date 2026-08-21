@@ -23,6 +23,17 @@ const nextConfig: NextConfig = {
         ]
       : [],
   },
+  // Server Actions cap request bodies at 1MB by default - too small for
+  // the Settings form's profile photo upload (server/actions/settings.ts
+  // already rejects anything over 5MB on its own terms, via
+  // MAX_PHOTO_BYTES in lib/profile-photo.ts; this just lets a
+  // within-limit photo's request body actually reach that check instead
+  // of being rejected earlier by Next.js itself).
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '5mb',
+    },
+  },
 };
 
 export default nextConfig;

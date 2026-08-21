@@ -6,6 +6,8 @@ import { User } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { Textarea } from '@/components/ui/Textarea';
+import { compressImage } from '@/lib/compress-image';
+import { ALLOWED_PHOTO_TYPES, MAX_PHOTO_BYTES } from '@/lib/profile-photo';
 import {
   updateSiteSettings,
   type SettingsFormState,
@@ -133,16 +135,56 @@ export function SiteSettingsForm({
   const [photoPreview, setPhotoPreview] = useState(
     settings.profile_photo_url
   );
+  const [photoError, setPhotoError] = useState<string | null>(null);
+  const [isCompressingPhoto, setIsCompressingPhoto] = useState(false);
 
-  function handlePhotoChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
+  async function handlePhotoChange(event: ChangeEvent<HTMLInputElement>) {
+    const input = event.target;
+    const file = input.files?.[0];
     if (!file) return;
+
+    setPhotoError(null);
+
+    // Reject oversized files immediately, before even attempting the
+    // upload - server/actions/settings.ts enforces the same limit as the
+    // real gate, this is just faster feedback. (Type is also
+    // server-checked; the `accept` attribute above only *suggests* a
+    // filter, it doesn't enforce one - most OS file pickers still let a
+    // user override it.)
+    if (file.size > MAX_PHOTO_BYTES) {
+      setPhotoError(
+        `"${file.name}" is ${(file.size / (1024 * 1024)).toFixed(1)}MB - photos must be under 5MB.`
+      );
+      input.value = '';
+      return;
+    }
+    if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
+      setPhotoError('Photo must be a JPEG, PNG, WebP, or GIF image.');
+      input.value = '';
+      return;
+    }
+
+    setIsCompressingPhoto(true);
+    // Resize/re-encode client-side before upload, so a multi-MB phone
+    // photo doesn't get stored at full resolution for what's displayed
+    // as a small circle - see compress-image.ts for the fallback
+    // behavior if this fails for any reason.
+    const processedFile = await compressImage(file);
+    setIsCompressingPhoto(false);
+
+    // The <input>'s own FileList is what actually gets submitted with
+    // the form - swap it to the (possibly compressed) file via
+    // DataTransfer so the upload uses that version, not the original.
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(processedFile);
+    input.files = dataTransfer.files;
+
     // Revoke the previous object URL (if any) before creating a new one,
     // so switching the file twice in a row doesn't leak the first blob.
     if (photoPreview?.startsWith('blob:')) {
       URL.revokeObjectURL(photoPreview);
     }
-    setPhotoPreview(URL.createObjectURL(file));
+    setPhotoPreview(URL.createObjectURL(processedFile));
   }
 
   return (
@@ -176,12 +218,24 @@ export function SiteSettingsForm({
             type="file"
             accept="image/jpeg,image/png,image/webp,image/gif"
             onChange={handlePhotoChange}
+            disabled={isCompressingPhoto}
             className="text-sm text-foreground file:mr-3 file:rounded-lg file:border file:border-border file:bg-background file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-foreground hover:file:bg-muted"
           />
-          <p className="text-xs text-muted-foreground">
-            JPEG, PNG, WebP, or GIF, up to 5MB. Leave blank to keep the
-            current photo.
-          </p>
+          {isCompressingPhoto ? (
+            <p className="text-xs text-muted-foreground">
+              Compressing image…
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              JPEG, PNG, WebP, or GIF, up to 5MB. Leave blank to keep the
+              current photo.
+            </p>
+          )}
+          {photoError && (
+            <p role="alert" className="text-xs text-red-600 dark:text-red-400">
+              {photoError}
+            </p>
+          )}
         </div>
       </div>
 
