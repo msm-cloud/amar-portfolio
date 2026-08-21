@@ -368,6 +368,7 @@ export interface Database {
           stat_3_label: string | null;
           stat_3_value_bn: string | null;
           stat_3_label_bn: string | null;
+          resume_url: string | null;
           updated_at: string;
         };
         Insert: {
@@ -393,6 +394,7 @@ export interface Database {
           stat_3_label?: string | null;
           stat_3_value_bn?: string | null;
           stat_3_label_bn?: string | null;
+          resume_url?: string | null;
           updated_at?: string;
         };
         Update: {
@@ -418,6 +420,7 @@ export interface Database {
           stat_3_label?: string | null;
           stat_3_value_bn?: string | null;
           stat_3_label_bn?: string | null;
+          resume_url?: string | null;
           updated_at?: string;
         };
         Relationships: [];
