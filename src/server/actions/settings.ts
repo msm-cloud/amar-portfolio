@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
+import { ALLOWED_PHOTO_TYPES, MAX_PHOTO_BYTES } from '@/lib/profile-photo';
 
 export interface SettingsFormState {
   status: 'idle' | 'success' | 'error';
@@ -9,8 +10,6 @@ export interface SettingsFormState {
 }
 
 const FULL_NAME_MAX_LENGTH = 150;
-const MAX_PHOTO_BYTES = 5 * 1024 * 1024; // 5MB
-const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 function readFields(formData: FormData) {
   return {
