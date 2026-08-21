@@ -6,10 +6,12 @@ import { Experience } from '@/components/sections/Experience';
 import { Certifications } from '@/components/sections/Certifications';
 import { Testimonials } from '@/components/sections/Testimonials';
 import { Contact } from '@/components/sections/Contact';
+import { HashScrollHandler } from './hash-scroll-handler';
 
 export default function Home() {
   return (
     <main className="flex flex-1 flex-col">
+      <HashScrollHandler />
       <Hero />
       <About />
       <Skills />

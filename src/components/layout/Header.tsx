@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/Button';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { SectionNavLink } from '@/components/ui/SectionNavLink';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { navItems, siteConfig } from '@/config/site';
 import { useActiveSection } from '@/hooks/useActiveSection';
@@ -19,24 +20,29 @@ export function Header() {
   const headerRef = useRef<HTMLElement>(null);
   const { t } = useTranslation();
   const pathname = usePathname();
+  const isHomepage = pathname === '/';
 
-  // Only hash-anchor items (href starting with "#") participate in
-  // scroll-spy - a real route link like Blog (/blog) has nothing to
-  // observe on the homepage. Stable across renders (navItems is a
-  // module-level constant) so useActiveSection's observer isn't torn
-  // down/recreated every render.
+  // Only hash-anchor items (href starting with "/#") participate in
+  // scroll-spy, and only when actually on the homepage - on any other
+  // route, the sections these ids refer to don't exist in the DOM at all,
+  // so there'd be nothing for the observer to attach to anyway. Depending
+  // on `isHomepage` (not just navItems) means the observer is correctly
+  // torn down/recreated on navigation to/from the homepage, while still
+  // staying referentially stable across re-renders of the same page.
   const sectionIds = useMemo(
     () =>
-      navItems
-        .filter((item) => item.href.startsWith('#'))
-        .map((item) => item.key ?? item.href.slice(1)),
-    []
+      isHomepage
+        ? navItems
+            .filter((item) => item.href.startsWith('/#'))
+            .map((item) => item.key ?? item.href.slice(2))
+        : [],
+    [isHomepage]
   );
   const activeSection = useActiveSection(sectionIds);
 
   function isNavItemActive(item: (typeof navItems)[number]): boolean {
-    if (item.href.startsWith('#')) {
-      return activeSection === (item.key ?? item.href.slice(1));
+    if (item.href.startsWith('/#')) {
+      return isHomepage && activeSection === (item.key ?? item.href.slice(2));
     }
     // Real route link (e.g. /blog) - active when it's the current page.
     return pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -98,9 +104,9 @@ export function Header() {
           {navItems.map((item) => {
             const isActive = isNavItemActive(item);
             return (
-              <a
+              <SectionNavLink
                 key={item.href}
-                href={item.href}
+                item={item}
                 className={cn(
                   'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                   isActive
@@ -109,7 +115,7 @@ export function Header() {
                 )}
               >
                 {t(`nav.${item.key ?? item.label.toLowerCase()}`)}
-              </a>
+              </SectionNavLink>
             );
           })}
         </nav>
@@ -161,10 +167,10 @@ export function Header() {
               {navItems.map((item) => {
                 const isActive = isNavItemActive(item);
                 return (
-                  <a
+                  <SectionNavLink
                     key={item.href}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    item={item}
+                    onNavigate={() => setIsMobileMenuOpen(false)}
                     className={cn(
                       'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                       isActive
@@ -173,7 +179,7 @@ export function Header() {
                     )}
                   >
                     {t(`nav.${item.key ?? item.label.toLowerCase()}`)}
-                  </a>
+                  </SectionNavLink>
                 );
               })}
               {/* PLACEHOLDER - replace via admin panel */}
