@@ -44,6 +44,8 @@ directly from Client/Server Components.
   photo upload: reads the `photo` File off the same FormData, uploads it
   to the `profile-photos` Storage bucket (fixed filename, `upsert: true`
   - see the function's own comment on why), and only overwrites
-  `profile_photo_url` if a new file was actually provided. Authorization
-  is RLS (`site_settings_write_admin_editor` for the table,
-  `profile_photos_*_admin_editor` for the bucket).
+  `profile_photo_url` if a new file was actually provided. The resume PDF
+  upload works identically, into the `resume` bucket / `resume_url`.
+  Authorization is RLS (`site_settings_write_admin_editor` for the table,
+  `profile_photos_*_admin_editor` / `resume_*_admin_editor` for the
+  buckets).

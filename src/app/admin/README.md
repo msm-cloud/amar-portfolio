@@ -56,4 +56,7 @@ signed-in user whose `profiles.role` is `'admin'` or `'editor'`, **except**
   same bug class already fixed once in `BlogPostForm`/`Contact`. The
   photo input uploads straight to the `profile-photos` Storage bucket
   inside the server action itself (see `server/actions/settings.ts`),
-  not a separate client-side upload step.
+  not a separate client-side upload step. A resume PDF upload works the
+  same way, into the `resume` bucket - PDF-only, no compression step
+  (nothing to resize/re-encode), shows a "View current resume" link when
+  one's already been uploaded.

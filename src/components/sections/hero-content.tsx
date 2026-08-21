@@ -39,6 +39,7 @@ export function HeroContent({
       )
     : '';
   const photoUrl = settings?.profile_photo_url ?? null;
+  const resumeUrl = settings?.resume_url ?? null;
 
   return (
     <section className="relative flex min-h-[100svh] items-center overflow-hidden">
@@ -129,13 +130,22 @@ export function HeroContent({
               >
                 {t('hero.viewProjects')}
               </a>
-              {/* PLACEHOLDER - replace via admin panel */}
-              <a
-                href="#"
-                className={buttonVariants({ variant: 'outline', size: 'lg' })}
-              >
-                {t('hero.downloadResume')}
-              </a>
+              {/* Hidden entirely (not a dead/broken link) until a resume
+                  has actually been uploaded via /admin/settings. */}
+              {resumeUrl && (
+                <a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className={buttonVariants({
+                    variant: 'outline',
+                    size: 'lg',
+                  })}
+                >
+                  {t('hero.downloadResume')}
+                </a>
+              )}
             </motion.div>
           </motion.div>
         </div>

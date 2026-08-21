@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import { ALLOWED_PHOTO_TYPES, MAX_PHOTO_BYTES } from '@/lib/profile-photo';
+import { ALLOWED_RESUME_TYPES, MAX_RESUME_BYTES } from '@/lib/resume';
 
 export interface SettingsFormState {
   status: 'idle' | 'success' | 'error';
@@ -114,6 +115,45 @@ export async function updateSiteSettings(
     profilePhotoUrl = `${publicUrl}?t=${Date.now()}`;
   }
 
+  // Resume upload is optional too - same "only touch it if a new file
+  // was actually chosen" behavior as the photo above.
+  const resume = formData.get('resume');
+  let resumeUrl: string | undefined;
+
+  if (resume instanceof File && resume.size > 0) {
+    if (!ALLOWED_RESUME_TYPES.includes(resume.type)) {
+      return { status: 'error', message: 'Resume must be a PDF file.' };
+    }
+    if (resume.size > MAX_RESUME_BYTES) {
+      return {
+        status: 'error',
+        message: 'Resume must be smaller than 5MB.',
+      };
+    }
+
+    // Fixed filename + upsert: true, same singleton-file reasoning as
+    // the profile photo above - there's only ever one resume.
+    const path = 'resume.pdf';
+
+    const { error: uploadError } = await supabase.storage
+      .from('resume')
+      .upload(path, resume, { upsert: true, contentType: resume.type });
+
+    if (uploadError) {
+      console.error('[settings] resume upload failed:', uploadError);
+      return {
+        status: 'error',
+        message: 'Something went wrong uploading the resume.',
+      };
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from('resume').getPublicUrl(path);
+    // Cache-bust - same reasoning as the photo's URL above.
+    resumeUrl = `${publicUrl}?t=${Date.now()}`;
+  }
+
   const { error } = await supabase
     .from('site_settings')
     .update({
@@ -138,6 +178,7 @@ export async function updateSiteSettings(
       stat_3_value_bn: fields.stat3ValueBn || null,
       stat_3_label_bn: fields.stat3LabelBn || null,
       ...(profilePhotoUrl ? { profile_photo_url: profilePhotoUrl } : {}),
+      ...(resumeUrl ? { resume_url: resumeUrl } : {}),
     })
     .eq('id', 1);
 

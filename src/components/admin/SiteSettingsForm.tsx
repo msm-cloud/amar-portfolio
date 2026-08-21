@@ -2,12 +2,13 @@
 
 import { useActionState, useState, type ChangeEvent } from 'react';
 import Image from 'next/image';
-import { User } from 'lucide-react';
+import { FileText, User } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { Textarea } from '@/components/ui/Textarea';
 import { compressImage } from '@/lib/compress-image';
 import { ALLOWED_PHOTO_TYPES, MAX_PHOTO_BYTES } from '@/lib/profile-photo';
+import { ALLOWED_RESUME_TYPES, MAX_RESUME_BYTES } from '@/lib/resume';
 import {
   updateSiteSettings,
   type SettingsFormState,
@@ -187,6 +188,37 @@ export function SiteSettingsForm({
     setPhotoPreview(URL.createObjectURL(processedFile));
   }
 
+  // Resume is also fine left as an uncontrolled <input type="file"> -
+  // same reasoning as the photo above. No compression step (nothing to
+  // resize/re-encode for a PDF); just validation and a filename to show
+  // once one's picked.
+  const [resumeFileName, setResumeFileName] = useState<string | null>(null);
+  const [resumeError, setResumeError] = useState<string | null>(null);
+
+  function handleResumeChange(event: ChangeEvent<HTMLInputElement>) {
+    const input = event.target;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    setResumeError(null);
+    setResumeFileName(null);
+
+    if (!ALLOWED_RESUME_TYPES.includes(file.type)) {
+      setResumeError('Resume must be a PDF file.');
+      input.value = '';
+      return;
+    }
+    if (file.size > MAX_RESUME_BYTES) {
+      setResumeError(
+        `"${file.name}" is ${(file.size / (1024 * 1024)).toFixed(1)}MB - the resume must be under 5MB.`
+      );
+      input.value = '';
+      return;
+    }
+
+    setResumeFileName(file.name);
+  }
+
   return (
     <form action={formAction} className="flex flex-col gap-6">
       <div className="flex items-center gap-4">
@@ -237,6 +269,48 @@ export function SiteSettingsForm({
             </p>
           )}
         </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label
+          htmlFor="resume"
+          className="text-sm font-medium text-muted-foreground"
+        >
+          Resume (PDF)
+        </label>
+        {settings.resume_url && (
+          <a
+            href={settings.resume_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex w-fit items-center gap-1.5 text-sm text-primary hover:underline"
+          >
+            <FileText className="h-4 w-4" aria-hidden />
+            View current resume
+          </a>
+        )}
+        <input
+          id="resume"
+          name="resume"
+          type="file"
+          accept="application/pdf"
+          onChange={handleResumeChange}
+          className="text-sm text-foreground file:mr-3 file:rounded-lg file:border file:border-border file:bg-background file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-foreground hover:file:bg-muted"
+        />
+        {resumeFileName ? (
+          <p className="text-xs text-muted-foreground">
+            Selected: {resumeFileName}
+          </p>
+        ) : (
+          <p className="text-xs text-muted-foreground">
+            PDF only, up to 5MB. Leave blank to keep the current resume.
+          </p>
+        )}
+        {resumeError && (
+          <p role="alert" className="text-xs text-red-600 dark:text-red-400">
+            {resumeError}
+          </p>
+        )}
       </div>
 
       <Input

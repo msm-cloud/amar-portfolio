@@ -31,6 +31,8 @@ pages.
 - `SiteSettingsForm` — single form (no `mode`/create-vs-edit split; there's
   only ever the one `site_settings` row) for the Hero/About sections'
   content, plus a profile photo `<input type="file">` with an image
-  preview. Every field is controlled, not `defaultValue` - see the note
-  in `admin/settings/page.tsx`'s own directory for why that matters more
-  here than in the other forms above.
+  preview, and a resume PDF `<input type="file">` (a "View current
+  resume" link shows once one's uploaded). Every field is controlled,
+  not `defaultValue` - see the note in `admin/settings/page.tsx`'s own
+  directory for why that matters more here than in the other forms
+  above.
