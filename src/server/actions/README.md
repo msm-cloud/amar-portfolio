@@ -34,3 +34,16 @@ directly from Client/Server Components.
   (projects/blog_posts tie-break by `created_at`). Authorization is RLS
   (`skills_write_admin_editor` / `experience_write_admin_editor` /
   `certifications_write_admin_editor` / `testimonials_write_admin_editor`).
+- `settings.ts` — `updateSiteSettings`, the one exception to the
+  `create*`/`update*`/`delete*`/`move*` shape above: `site_settings` is a
+  singleton (`id = 1`, seeded by its migration), so there's only ever an
+  update, no create/delete/reorder. Doesn't `redirect()` on success like
+  every other form here does (there's no list page to send the admin
+  back to) - returns a `'success'` state instead, so the form can show an
+  inline "Settings saved" message and stay put. Also handles the profile
+  photo upload: reads the `photo` File off the same FormData, uploads it
+  to the `profile-photos` Storage bucket (fixed filename, `upsert: true`
+  - see the function's own comment on why), and only overwrites
+  `profile_photo_url` if a new file was actually provided. Authorization
+  is RLS (`site_settings_write_admin_editor` for the table,
+  `profile_photos_*_admin_editor` for the bucket).

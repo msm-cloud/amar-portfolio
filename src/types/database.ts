@@ -2,7 +2,8 @@
  * types/database.ts
  * ------------------
  * Hand-written Supabase database types, matching
- * supabase/migrations/20260819220000_initial_schema.sql.
+ * supabase/migrations/20260819220000_initial_schema.sql and
+ * supabase/migrations/20260821090000_site_settings.sql.
  *
  * If the Supabase CLI is set up later, this file can be replaced with the
  * output of:
@@ -340,6 +341,84 @@ export interface Database {
           message?: string;
           is_read?: boolean;
           created_at?: string;
+        };
+        Relationships: [];
+      };
+      site_settings: {
+        Row: {
+          id: number;
+          full_name: string;
+          full_name_bn: string | null;
+          tagline: string | null;
+          tagline_bn: string | null;
+          hero_description: string | null;
+          hero_description_bn: string | null;
+          about_bio: string | null;
+          about_bio_bn: string | null;
+          profile_photo_url: string | null;
+          stat_1_value: string | null;
+          stat_1_label: string | null;
+          stat_1_value_bn: string | null;
+          stat_1_label_bn: string | null;
+          stat_2_value: string | null;
+          stat_2_label: string | null;
+          stat_2_value_bn: string | null;
+          stat_2_label_bn: string | null;
+          stat_3_value: string | null;
+          stat_3_label: string | null;
+          stat_3_value_bn: string | null;
+          stat_3_label_bn: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          id?: number;
+          full_name: string;
+          full_name_bn?: string | null;
+          tagline?: string | null;
+          tagline_bn?: string | null;
+          hero_description?: string | null;
+          hero_description_bn?: string | null;
+          about_bio?: string | null;
+          about_bio_bn?: string | null;
+          profile_photo_url?: string | null;
+          stat_1_value?: string | null;
+          stat_1_label?: string | null;
+          stat_1_value_bn?: string | null;
+          stat_1_label_bn?: string | null;
+          stat_2_value?: string | null;
+          stat_2_label?: string | null;
+          stat_2_value_bn?: string | null;
+          stat_2_label_bn?: string | null;
+          stat_3_value?: string | null;
+          stat_3_label?: string | null;
+          stat_3_value_bn?: string | null;
+          stat_3_label_bn?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          id?: number;
+          full_name?: string;
+          full_name_bn?: string | null;
+          tagline?: string | null;
+          tagline_bn?: string | null;
+          hero_description?: string | null;
+          hero_description_bn?: string | null;
+          about_bio?: string | null;
+          about_bio_bn?: string | null;
+          profile_photo_url?: string | null;
+          stat_1_value?: string | null;
+          stat_1_label?: string | null;
+          stat_1_value_bn?: string | null;
+          stat_1_label_bn?: string | null;
+          stat_2_value?: string | null;
+          stat_2_label?: string | null;
+          stat_2_value_bn?: string | null;
+          stat_2_label_bn?: string | null;
+          stat_3_value?: string | null;
+          stat_3_label?: string | null;
+          stat_3_value_bn?: string | null;
+          stat_3_label_bn?: string | null;
+          updated_at?: string;
         };
         Relationships: [];
       };
