@@ -21,6 +21,13 @@ export interface NavItem {
 export interface SocialLink {
   label: string;
   href: string;
+  /** True for a real destination that should open in a new tab (with
+   * rel="noopener noreferrer") - false/omitted for mailto: links (same-tab
+   * mail-client handoff) and "#" placeholders that don't go anywhere real
+   * yet. Explicit rather than inferred from the href's shape, since both
+   * "starts with mailto:" and "is a real external URL" needed telling
+   * apart from a plain "#" placeholder. */
+  external?: boolean;
 }
 
 // ============================================================================

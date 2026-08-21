@@ -1,22 +1,31 @@
 'use client';
 
-import { Briefcase, Code2, Mail, Share2, type LucideIcon } from 'lucide-react';
+import {
+  Briefcase,
+  Code2,
+  Mail,
+  MessageCircle,
+  Share2,
+  type LucideIcon,
+} from 'lucide-react';
 import { SectionNavLink } from '@/components/ui/SectionNavLink';
 import { navItems, siteConfig, socialLinks } from '@/config/site';
 import { useTranslation } from '@/lib/use-translation';
 
 // lucide-react has no brand-logo icons (confirmed against the installed
 // package — same reason "View Code" uses Code2 instead of a GitHub mark
-// elsewhere in this app), so these are the closest generic stand-ins,
-// not the real platform logos. aria-label on each link still says the
-// real platform name for screen readers. Platform names (GitHub,
-// Facebook, LinkedIn) are brand names and intentionally not translated,
-// same convention as elsewhere in this app - "Email" is generic but left
-// consistent with its three neighbors rather than singled out.
+// elsewhere in this app, and MessageCircle stands in for WhatsApp here),
+// so these are the closest generic stand-ins, not the real platform
+// logos. aria-label on each link still says the real platform name for
+// screen readers. Platform names (GitHub, Facebook, LinkedIn, WhatsApp)
+// are brand names and intentionally not translated, same convention as
+// elsewhere in this app - "Email" is generic but left consistent with
+// its neighbors rather than singled out.
 const SOCIAL_ICONS: Record<string, LucideIcon> = {
   GitHub: Code2,
   Facebook: Share2,
   LinkedIn: Briefcase,
+  WhatsApp: MessageCircle,
   Email: Mail,
 };
 
@@ -32,8 +41,9 @@ export function Footer() {
             {siteConfig.name}
           </span>
 
-          {/* PLACEHOLDER hrefs - replace via admin panel with real profile
-              URLs (Email already links out via mailto:). */}
+          {/* LinkedIn/Facebook are still "#" placeholders - see the
+              comments on socialLinks in config/site.ts. GitHub, WhatsApp,
+              and Email all link out for real. */}
           <div className="flex items-center gap-2">
             {socialLinks.map((link) => {
               const Icon = SOCIAL_ICONS[link.label] ?? Share2;
@@ -41,14 +51,8 @@ export function Footer() {
                 <a
                   key={link.label}
                   href={link.href}
-                  target={
-                    link.href.startsWith('mailto:') ? undefined : '_blank'
-                  }
-                  rel={
-                    link.href.startsWith('mailto:')
-                      ? undefined
-                      : 'noopener noreferrer'
-                  }
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'noopener noreferrer' : undefined}
                   aria-label={link.label}
                   className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors duration-200 hover:bg-background hover:text-foreground"
                 >
