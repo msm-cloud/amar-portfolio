@@ -49,10 +49,14 @@ export const navItems: NavItem[] = [
   { key: 'contact', label: 'Contact', href: '/#contact' },
 ];
 
-// PLACEHOLDER - replace via admin panel / real profile URLs once available.
 export const socialLinks: SocialLink[] = [
-  { label: 'GitHub', href: '#' },
-  { label: 'Facebook', href: '#' },
+  { label: 'GitHub', href: 'https://github.com/msm-cloud', external: true },
+  // PLACEHOLDER - needs a real LinkedIn profile URL.
   { label: 'LinkedIn', href: '#' },
-  { label: 'Email', href: 'mailto:hello@example.com' },
+  // PLACEHOLDER - needs a real Facebook Page URL.
+  { label: 'Facebook', href: '#' },
+  // WhatsApp click-to-chat link (wa.me) - opens a chat with this number
+  // directly, no contact-saving required on the visitor's end.
+  { label: 'WhatsApp', href: 'https://wa.me/8801730785805', external: true },
+  { label: 'Email', href: 'mailto:mmshahidullah103@gmail.com' },
 ];
