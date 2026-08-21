@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useActionState } from 'react';
 import { signIn, type AuthActionState } from '@/server/actions/auth';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -8,7 +9,13 @@ import { SubmitButton } from '@/components/ui/SubmitButton';
 
 const initialState: AuthActionState = { error: null };
 
-export function LoginForm({ sessionError }: { sessionError?: string }) {
+export function LoginForm({
+  sessionError,
+  successMessage,
+}: {
+  sessionError?: string;
+  successMessage?: string;
+}) {
   const [state, formAction] = useActionState(signIn, initialState);
   const error = state.error ?? sessionError ?? null;
 
@@ -20,6 +27,12 @@ export function LoginForm({ sessionError }: { sessionError?: string }) {
       <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
         Sign in with the email and password you were given.
       </p>
+
+      {successMessage && (
+        <p role="status" className="mb-4 text-sm text-primary">
+          {successMessage}
+        </p>
+      )}
 
       <form action={formAction} className="flex flex-col gap-4">
         <Input
@@ -48,6 +61,13 @@ export function LoginForm({ sessionError }: { sessionError?: string }) {
           Sign in
         </SubmitButton>
       </form>
+
+      <Link
+        href="/admin/forgot-password"
+        className="mt-4 block text-center text-sm text-primary hover:underline"
+      >
+        Forgot password?
+      </Link>
     </GlassCard>
   );
 }

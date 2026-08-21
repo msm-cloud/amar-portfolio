@@ -36,3 +36,7 @@ pages.
   not `defaultValue` - see the note in `admin/settings/page.tsx`'s own
   directory for why that matters more here than in the other forms
   above.
+- `ChangePasswordForm` — New/Confirm Password, `changePassword` in
+  `server/actions/auth.ts`. Clears both fields once the change actually
+  succeeds (not on a validation error, so a "passwords don't match"
+  rejection doesn't force retyping both from scratch).

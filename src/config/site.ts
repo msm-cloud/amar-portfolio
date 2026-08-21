@@ -17,10 +17,10 @@ export const siteConfig = {
   seoTitle: 'Shahid — Web Developer & Graphic Designer',
   description:
     'Portfolio of Shahid, a web developer and graphic designer with financial-sector operations experience, showcasing projects, skills, and writing.',
-  // PLACEHOLDER - update to the real Vercel production domain once
-  // deployed (used for metadataBase, Open Graph/Twitter absolute URLs,
-  // and sitemap.ts/robots.ts).
-  url: 'https://amar-portfolio.vercel.app',
+  // Real deployed production domain (used for metadataBase, Open Graph/
+  // Twitter absolute URLs, sitemap.ts/robots.ts, and the password-reset
+  // email's redirect - see requestPasswordReset in server/actions/auth.ts).
+  url: 'https://amar-portfolio-nu.vercel.app',
 };
 
 // Homepage-section items use a "/#section" href (not a bare "#section") -

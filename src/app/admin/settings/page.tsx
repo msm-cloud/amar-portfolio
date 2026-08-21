@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { ChangePasswordForm } from '@/components/admin/ChangePasswordForm';
 import { SiteSettingsForm } from '@/components/admin/SiteSettingsForm';
 import { createClient } from '@/lib/supabase/server';
 
@@ -24,28 +25,42 @@ export default async function AdminSettingsPage() {
 
   if (error || !settings) {
     return (
-      <div>
-        <h1 className="text-2xl font-semibold text-foreground">
-          Site Settings
-        </h1>
-        <p className="mt-4 text-sm text-red-600 dark:text-red-400">
-          Failed to load site settings. Please refresh and try again.
-        </p>
+      <div className="flex flex-col gap-8">
+        <div>
+          <h1 className="text-2xl font-semibold text-foreground">
+            Site Settings
+          </h1>
+          <p className="mt-4 text-sm text-red-600 dark:text-red-400">
+            Failed to load site settings. Please refresh and try again.
+          </p>
+        </div>
+
+        {/* Change Password is unrelated to site_settings, so it still
+            renders even if the query above failed. */}
+        <div className="max-w-2xl">
+          <ChangePasswordForm />
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-semibold text-foreground">
-        Site Settings
-      </h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Controls the Hero and About sections&rsquo; content on the public
-        homepage.
-      </p>
-      <div className="mt-6 max-w-2xl">
-        <SiteSettingsForm settings={settings} />
+    <div className="flex flex-col gap-8">
+      <div>
+        <h1 className="text-2xl font-semibold text-foreground">
+          Site Settings
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Controls the Hero and About sections&rsquo; content on the public
+          homepage.
+        </p>
+        <div className="mt-6 max-w-2xl">
+          <SiteSettingsForm settings={settings} />
+        </div>
+      </div>
+
+      <div className="max-w-2xl">
+        <ChangePasswordForm />
       </div>
     </div>
   );

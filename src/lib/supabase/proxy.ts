@@ -3,7 +3,19 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type { Database } from '@/types/database';
 
 // Paths under /admin that do NOT require an authenticated session.
-const PUBLIC_ADMIN_PATHS = ['/admin/login'];
+// forgot-password/reset-password are here for the same reason login is -
+// reset-password in particular is visited by someone in a Supabase
+// "password recovery" state, not a normal admin/editor session (that
+// recovery session is only ever established client-side, from the token
+// in the reset-email link's URL - see reset-password-form.tsx). If this
+// path required a normal session, this middleware would redirect the
+// visitor to /admin/login before the client-side recovery handling ever
+// got a chance to run.
+const PUBLIC_ADMIN_PATHS = [
+  '/admin/login',
+  '/admin/forgot-password',
+  '/admin/reset-password',
+];
 
 function isPublicAdminPath(pathname: string) {
   return PUBLIC_ADMIN_PATHS.some(
