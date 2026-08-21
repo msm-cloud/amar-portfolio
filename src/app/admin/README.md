@@ -19,11 +19,20 @@ signed-in user whose `profiles.role` is `'admin'` or `'editor'`, **except**
 - `projects/new/page.tsx` and `projects/[id]/edit/page.tsx` — share
   `src/components/admin/ProjectForm.tsx` (Tiptap editor via the shared
   `RichTextEditor`, tag chips via `TagInput`).
+- `skills/page.tsx`, `experience/page.tsx`, `certifications/page.tsx` —
+  same list/reorder/Edit/Delete pattern as `projects/page.tsx`, minus a
+  status badge (these three tables have no `status` column - always
+  public). Forms: `SkillForm` (category `<select>` - a fixed 4-value
+  enum, not a combobox like Projects' category; `ProficiencyLevelInput`
+  for the 1-5 dot picker), `ExperienceForm` (Is Current toggle
+  disables/clears End Date), `CertificationForm`. The Experience admin
+  list orders by `display_order` (for its reorder buttons) but the public
+  section itself sorts by `start_date` instead - see `moveExperience`'s
+  own comment for why that split is intentional.
 - `blog/page.tsx` — lists all `blog_posts` (draft and published); Edit /
   Delete per row, "New Post" button.
 - `blog/new/page.tsx` and `blog/[id]/edit/page.tsx` — share
   `src/components/admin/BlogPostForm.tsx` (Tiptap editor via the shared
   `RichTextEditor`).
-- Other nav items (Skills, Experience, Certifications, Testimonials,
-  Settings) are linked from the sidebar but their pages don't exist yet —
-  that's later steps (content-management CRUD UI).
+- Other nav items (Testimonials, Settings) are linked from the sidebar
+  but their pages don't exist yet — that's a later step.
