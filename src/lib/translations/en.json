@@ -22,6 +22,10 @@
     "title": "A blend of engineering, design, and financial-sector discipline",
     "description": "A quick overview of my background — the full story, projects, and skills breakdown live further down the page."
   },
+  "github": {
+    "heading": "GitHub Activity",
+    "loadError": "Couldn't load GitHub activity right now."
+  },
   "skills": {
     "eyebrow": "Skills",
     "title": "Tools & Technologies I Work With",
@@ -89,6 +93,11 @@
   "footer": {
     "quickLinks": "Quick Links",
     "rightsReserved": "All rights reserved."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have been moved.",
+    "homeButton": "Back to Home"
   },
   "language": {
     "toggleLabel": "Switch language"

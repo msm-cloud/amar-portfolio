@@ -67,6 +67,11 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.description ?? undefined,
+    openGraph: {
+      title: project.title,
+      description: project.description ?? undefined,
+      images: project.cover_image_url ? [{ url: project.cover_image_url }] : [],
+    },
   };
 }
 
