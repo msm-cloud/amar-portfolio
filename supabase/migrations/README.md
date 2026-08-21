@@ -16,6 +16,7 @@ that's already been run against a real environment — add a new file instead.
 | `testimonials`     | Client/colleague testimonials                               | Always                      |
 | `blog_posts`       | Blog posts (HTML content)                                   | Only `status = 'published'` |
 | `contact_messages` | Contact form submissions                                    | Never (insert-only, public) |
+| `site_settings`    | Singleton Hero/About content (name, bio, stats, photo)      | Always (single row, `id = 1`) |
 
 **Bilingual content:** any field a visitor reads as prose has a parallel
 `<field>_bn` column (e.g. `title` / `title_bn`) for Bangla, used by the
@@ -41,6 +42,17 @@ instead, so filter/query logic never has to compare across languages.
   `insert`; only admins/editors can `select`/`update`/`delete`.
 - **`profiles`**: a user can `select` their own row; admins can `select`
   every row and have full write access (needed to promote/demote roles).
+- **`site_settings`**: a singleton (`id integer primary key default 1
+  check (id = 1)` - inserting any other row is physically impossible).
+  Always publicly readable; only an `update` policy exists for admin/
+  editor (see `20260821090000_site_settings.sql`'s own note) - nothing
+  in the app ever needs to insert a second row or delete the only one.
+- **Storage** (`20260821090100_profile_photos_storage.sql`): a public
+  `profile-photos` bucket for the Hero section's photo, created via SQL
+  against `storage.buckets` - Supabase Storage's tables are regular
+  Postgres tables under RLS, so this needs no separate Dashboard step.
+  Public `select`; `insert`/`update`/`delete` are admin/editor-only,
+  same `is_admin_or_editor()` helper as everywhere else.
 - New signups automatically get a `profiles` row via the
   `handle_new_user()` trigger on `auth.users`, defaulting to `role = 'editor'`.
   **You must manually promote your own account to `admin`** after your

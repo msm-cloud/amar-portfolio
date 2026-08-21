@@ -39,5 +39,14 @@ signed-in user whose `profiles.role` is `'admin'` or `'editor'`, **except**
   Company, Content + optional Bangla content, Avatar URL - falls back to
   initials when blank, same as the public marquee - Featured toggle,
   Display Order).
-- Other nav items (Settings) are linked from the sidebar but their pages
-  don't exist yet — that's a later step.
+- `settings/page.tsx` — single-page form (no list, no reorder - it's a
+  singleton) for the Hero/About sections' content: name, tagline, hero
+  description, about bio (all + optional Bangla), the 3 About stat cards,
+  and a profile photo upload. Form: `SiteSettingsForm` - every text field
+  is controlled (not `defaultValue`) since this form never redirects
+  after saving (there's no list to redirect to), so a validation error
+  re-renders the same page and would otherwise reset in-progress edits -
+  same bug class already fixed once in `BlogPostForm`/`Contact`. The
+  photo input uploads straight to the `profile-photos` Storage bucket
+  inside the server action itself (see `server/actions/settings.ts`),
+  not a separate client-side upload step.
