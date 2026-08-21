@@ -26,12 +26,11 @@ directly from Client/Server Components.
   rows' raw values, so a move is never a silent no-op when two rows
   already share the same `display_order`. Authorization is RLS
   (`projects_write_admin_editor`).
-- `skills.ts` / `experience.ts` / `certifications.ts` — same shape as
-  projects.ts (`create*`/`update*` via `useActionState`, `delete*` called
-  directly, `move*(id, direction)` re-numbering `display_order`), one file
-  per table. These three tables have no `created_at` column, so `move*`
-  tie-breaks the sort by `id` instead (projects/blog_posts tie-break by
-  `created_at`). Authorization is RLS (`skills_write_admin_editor` /
-  `experience_write_admin_editor` / `certifications_write_admin_editor`).
-
-More will be added in later steps (Testimonials admin CRUD).
+- `skills.ts` / `experience.ts` / `certifications.ts` / `testimonials.ts`
+  — same shape as projects.ts (`create*`/`update*` via `useActionState`,
+  `delete*` called directly, `move*(id, direction)` re-numbering
+  `display_order`), one file per table. These four tables have no
+  `created_at` column, so `move*` tie-breaks the sort by `id` instead
+  (projects/blog_posts tie-break by `created_at`). Authorization is RLS
+  (`skills_write_admin_editor` / `experience_write_admin_editor` /
+  `certifications_write_admin_editor` / `testimonials_write_admin_editor`).
