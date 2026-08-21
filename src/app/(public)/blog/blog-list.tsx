@@ -7,12 +7,28 @@ import { BentoCard } from '@/components/ui/BentoCard';
 import { CoverImage } from '@/components/ui/CoverImage';
 import { fadeInUp, staggerContainer } from '@/lib/animations';
 import { estimateReadingTime, formatPublishedDate } from '@/lib/blog';
+import { useTranslation } from '@/lib/use-translation';
 import type { Database } from '@/types/database';
 
 type BlogPost = Database['public']['Tables']['blog_posts']['Row'];
 
-export function BlogList({ posts }: { posts: BlogPost[] }) {
+export function BlogList({
+  posts,
+  error,
+}: {
+  posts: BlogPost[];
+  error: boolean;
+}) {
   const shouldReduceMotion = useReducedMotion();
+  const { t } = useTranslation();
+
+  if (error) {
+    return (
+      <p className="text-sm text-red-600 dark:text-red-400">
+        {t('blog.loadError')}
+      </p>
+    );
+  }
 
   if (posts.length === 0) {
     return (
@@ -21,9 +37,7 @@ export function BlogList({ posts }: { posts: BlogPost[] }) {
           className="mx-auto h-8 w-8 text-muted-foreground"
           aria-hidden
         />
-        <p className="mt-4 text-sm text-muted-foreground">
-          No posts yet — check back soon.
-        </p>
+        <p className="mt-4 text-sm text-muted-foreground">{t('blog.empty')}</p>
       </div>
     );
   }
@@ -61,7 +75,9 @@ export function BlogList({ posts }: { posts: BlogPost[] }) {
                 <div className="mt-auto flex items-center gap-2 pt-2 text-xs text-muted-foreground">
                   <span>{formatPublishedDate(post.published_at)}</span>
                   <span aria-hidden>·</span>
-                  <span>{estimateReadingTime(post.content)} min read</span>
+                  <span>
+                    {estimateReadingTime(post.content)} {t('blog.minRead')}
+                  </span>
                 </div>
               </div>
             </BentoCard>

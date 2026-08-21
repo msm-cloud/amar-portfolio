@@ -56,6 +56,14 @@
     "eyebrow": "Testimonials",
     "title": "What People Say"
   },
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Writing & Notes",
+    "loadError": "Failed to load posts. Please refresh and try again.",
+    "empty": "No posts yet — check back soon.",
+    "minRead": "min read",
+    "backToBlog": "Back to Blog"
+  },
   "contact": {
     "eyebrow": "Contact",
     "title": "Let's Work Together",

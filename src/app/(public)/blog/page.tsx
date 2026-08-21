@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { SectionContainer } from '@/components/ui/SectionContainer';
-import { SectionHeading } from '@/components/ui/SectionHeading';
+import { BlogHeading } from './blog-heading';
 import { BlogList } from './blog-list';
 
 // Real Supabase data (not placeholder-data.ts) - this is the first
@@ -8,6 +8,12 @@ import { BlogList } from './blog-list';
 // already restricts anon/public SELECT to status = 'published' rows
 // (blog_posts_select_published policy), but the query is explicit about
 // it too, as a defense-in-depth match for the brief's requirement.
+//
+// Static UI chrome (heading, empty/error state) is bilingual - BlogHeading
+// and BlogList are both Client Components for the language context, same
+// split as every other migrated section. Post title/excerpt/content stay
+// in whatever single language the admin wrote them in - see the note in
+// src/lib/blog.ts on why full bilingual *post content* isn't built here.
 export default async function BlogPage() {
   const supabase = await createClient();
   const { data: posts, error } = await supabase
@@ -19,15 +25,8 @@ export default async function BlogPage() {
   return (
     <main className="flex flex-1 flex-col">
       <SectionContainer>
-        <SectionHeading eyebrow="Blog" title="Writing & Notes" />
-
-        {error ? (
-          <p className="text-sm text-red-600 dark:text-red-400">
-            Failed to load posts. Please refresh and try again.
-          </p>
-        ) : (
-          <BlogList posts={posts ?? []} />
-        )}
+        <BlogHeading />
+        <BlogList posts={posts ?? []} error={Boolean(error)} />
       </SectionContainer>
     </main>
   );
