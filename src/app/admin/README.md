@@ -34,5 +34,10 @@ signed-in user whose `profiles.role` is `'admin'` or `'editor'`, **except**
 - `blog/new/page.tsx` and `blog/[id]/edit/page.tsx` — share
   `src/components/admin/BlogPostForm.tsx` (Tiptap editor via the shared
   `RichTextEditor`).
-- Other nav items (Testimonials, Settings) are linked from the sidebar
-  but their pages don't exist yet — that's a later step.
+- `testimonials/page.tsx` — same list/reorder/Edit/Delete pattern as
+  `skills/page.tsx` etc. Form: `TestimonialForm` (Author Name/Title/
+  Company, Content + optional Bangla content, Avatar URL - falls back to
+  initials when blank, same as the public marquee - Featured toggle,
+  Display Order).
+- Other nav items (Settings) are linked from the sidebar but their pages
+  don't exist yet — that's a later step.

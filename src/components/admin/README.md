@@ -23,8 +23,8 @@ pages.
   `skills.proficiency_level`, styled to match the public `ProficiencyDots`
   (`components/ui/`) but interactive. Kept separate from that component
   since it's a public, presentational-only primitive.
-- `SkillForm` / `ExperienceForm` / `CertificationForm` — shared create/edit
-  forms for the three simpler content types (no rich text, no detail
-  page). `ExperienceForm`'s "Currently Working Here" toggle
-  disables-and-clears the End Date field when turned on. All three follow
+- `SkillForm` / `ExperienceForm` / `CertificationForm` / `TestimonialForm`
+  — shared create/edit forms for the simpler content types (no rich text,
+  no detail page). `ExperienceForm`'s "Currently Working Here" toggle
+  disables-and-clears the End Date field when turned on. All four follow
   the same `useActionState` + `.bind(null, id)` pattern as `ProjectForm`.
