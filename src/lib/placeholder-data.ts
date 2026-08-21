@@ -108,77 +108,14 @@ export function translateCategory(
 // ============================================================================
 // Experience
 // ============================================================================
-
-export type PlaceholderExperience =
-  Database['public']['Tables']['experience']['Row'];
-
-// PLACEHOLDER - replace with a real Supabase query
-// (`await supabase.from('experience').select('*').order('display_order')`)
-// once the admin panel's content management is built. Reverse
-// chronological order, mixing financial-sector administration with web
-// development/design work per the site owner's actual background.
-export const PLACEHOLDER_EXPERIENCE: PlaceholderExperience[] = [
-  {
-    id: 'exp-freelance',
-    title: 'Freelance Web Developer & Graphic Designer',
-    title_bn: 'ফ্রিল্যান্স ওয়েব ডেভেলপার ও গ্রাফিক ডিজাইনার',
-    organization: 'Self-Employed',
-    organization_bn: 'স্ব-নিযুক্ত',
-    description:
-      'Design and build websites, web apps, and brand identities for clients — including financial institutions — end to end: from UI design through frontend, backend, and database work.',
-    description_bn:
-      'ক্লায়েন্টদের জন্য ওয়েবসাইট, ওয়েব অ্যাপ এবং ব্র্যান্ড আইডেন্টিটি ডিজাইন ও নির্মাণ করি — আর্থিক প্রতিষ্ঠানসহ — ইউআই ডিজাইন থেকে শুরু করে ফ্রন্টএন্ড, ব্যাকএন্ড ও ডেটাবেজ পর্যন্ত সম্পূর্ণভাবে।',
-    start_date: '2024-01-01',
-    end_date: null,
-    is_current: true,
-    display_order: 1,
-  },
-  {
-    id: 'exp-city-savings',
-    title: 'Operations Officer',
-    title_bn: 'অপারেশনস অফিসার',
-    organization: 'City Savings Cooperative',
-    organization_bn: 'সিটি সেভিংস কো-অপারেটিভ',
-    description:
-      'Managed daily branch operations, transaction reconciliation, and reporting for a savings cooperative. The same operational rigor — accuracy, auditability, no room for "close enough" — now shapes how I build software.',
-    description_bn:
-      'একটি সেভিংস কো-অপারেটিভের দৈনন্দিন শাখা কার্যক্রম, লেনদেন মিলকরণ এবং প্রতিবেদন প্রস্তুতির দায়িত্ব পালন করেছি। নির্ভুলতা ও জবাবদিহিতার সেই একই কঠোর মান — যেখানে "মোটামুটি ঠিক আছে" বলে কিছু নেই — এখন আমার সফটওয়্যার তৈরির ধরনকে প্রভাবিত করে।',
-    start_date: '2021-06-01',
-    end_date: '2023-12-31',
-    is_current: false,
-    display_order: 2,
-  },
-  {
-    id: 'exp-web-developer',
-    title: 'Web Developer',
-    title_bn: 'ওয়েব ডেভেলপার',
-    organization: 'Pixel & Ledger Studio',
-    organization_bn: 'পিক্সেল অ্যান্ড লেজার স্টুডিও',
-    description:
-      'Built client websites and web apps end to end, handling both frontend design and backend implementation for small-business and local-organization clients.',
-    description_bn:
-      'ক্লায়েন্টদের জন্য ওয়েবসাইট ও ওয়েব অ্যাপ সম্পূর্ণভাবে তৈরি করেছি, ছোট ব্যবসা ও স্থানীয় প্রতিষ্ঠানের ক্লায়েন্টদের জন্য ফ্রন্টএন্ড ডিজাইন ও ব্যাকএন্ড বাস্তবায়ন উভয়ই সামলেছি।',
-    start_date: '2019-01-01',
-    end_date: '2021-05-31',
-    is_current: false,
-    display_order: 3,
-  },
-  {
-    id: 'exp-design-intern',
-    title: 'Graphic Design Intern',
-    title_bn: 'গ্রাফিক ডিজাইন ইন্টার্ন',
-    organization: 'Studio Nirjhor',
-    organization_bn: 'স্টুডিও নির্ঝর',
-    description:
-      'Assisted senior designers on branding and print projects — logo exploration, packaging mockups, and print-ready file preparation.',
-    description_bn:
-      'সিনিয়র ডিজাইনারদের ব্র্যান্ডিং ও প্রিন্ট প্রজেক্টে সহায়তা করেছি — লোগো এক্সপ্লোরেশন, প্যাকেজিং মকআপ এবং প্রিন্ট-রেডি ফাইল প্রস্তুতিতে।',
-    start_date: '2018-06-01',
-    end_date: '2018-12-31',
-    is_current: false,
-    display_order: 4,
-  },
-];
+//
+// The placeholder experience array itself has been retired -
+// Experience.tsx now reads real rows from Supabase (see
+// supabase/seed_experience.sql for the one-time script that seeds the
+// same 4 entries that used to live here as static data).
+// formatExperienceDateRange below is still a generic, data-source-agnostic
+// helper (takes a plain structural shape, not a "Placeholder" type), so it
+// stays.
 
 const MONTH_ABBREVIATIONS = [
   'Jan',
@@ -207,7 +144,7 @@ export function formatMonthYear(isoDate: string): string {
 }
 
 export function formatExperienceDateRange(
-  entry: PlaceholderExperience,
+  entry: { start_date: string; end_date: string | null; is_current: boolean },
   presentLabel: string
 ): string {
   const start = formatMonthYear(entry.start_date);
@@ -221,66 +158,20 @@ export function formatExperienceDateRange(
 // ============================================================================
 // Certifications
 // ============================================================================
-
-export type PlaceholderCertification =
-  Database['public']['Tables']['certifications']['Row'];
-
-// PLACEHOLDER - replace with a real Supabase query
-// (`await supabase.from('certifications').select('*').order('display_order')`)
-// once the admin panel's content management is built. Mix of formal
-// education, a banking/finance credential, and tech/design certifications.
-export const PLACEHOLDER_CERTIFICATIONS: PlaceholderCertification[] = [
-  {
-    id: 'cert-bsc-cs',
-    title: 'B.Sc. in Computer Science',
-    title_bn: 'কম্পিউটার সায়েন্সে বি.এসসি.',
-    issuing_organization: 'University of Dhaka',
-    issuing_organization_bn: 'ঢাকা বিশ্ববিদ্যালয়',
-    issue_date: '2018-12-01',
-    credential_url: null,
-    image_url: null,
-    display_order: 1,
-  },
-  {
-    id: 'cert-bibm-diploma',
-    title: 'Diploma in Banking',
-    title_bn: 'ব্যাংকিং-এ ডিপ্লোমা',
-    issuing_organization: 'Bangladesh Institute of Bank Management (BIBM)',
-    issuing_organization_bn:
-      'বাংলাদেশ ইনস্টিটিউট অফ ব্যাংক ম্যানেজমেন্ট (বিআইবিএম)',
-    issue_date: '2022-03-01',
-    credential_url: 'https://example.com',
-    image_url: null,
-    display_order: 2,
-  },
-  {
-    id: 'cert-meta-frontend',
-    title: 'Meta Front-End Developer Professional Certificate',
-    title_bn: 'মেটা ফ্রন্ট-এন্ড ডেভেলপার প্রফেশনাল সার্টিফিকেট',
-    issuing_organization: 'Meta (via Coursera)',
-    issuing_organization_bn: 'মেটা (কোর্সেরার মাধ্যমে)',
-    issue_date: '2023-08-01',
-    credential_url: 'https://example.com',
-    image_url: null,
-    display_order: 3,
-  },
-  {
-    id: 'cert-adobe-photoshop',
-    title: 'Adobe Certified Professional — Photoshop',
-    title_bn: 'অ্যাডোবি সার্টিফাইড প্রফেশনাল — ফটোশপ',
-    issuing_organization: 'Adobe',
-    issuing_organization_bn: 'অ্যাডোবি',
-    issue_date: '2020-05-01',
-    credential_url: 'https://example.com',
-    image_url: null,
-    display_order: 4,
-  },
-];
+//
+// The placeholder certifications array itself has been retired -
+// Certifications.tsx now reads real rows from Supabase (see
+// supabase/seed_certifications.sql for the one-time script that seeds the
+// same 4 entries that used to live here as static data).
+// getCertificationIcon below is still a generic, data-source-agnostic
+// helper (takes a plain structural shape, not a "Placeholder" type), so it
+// stays.
 
 /** Best-effort icon for a certification's badge, based on its title/org. */
-export function getCertificationIcon(
-  cert: PlaceholderCertification
-): LucideIcon {
+export function getCertificationIcon(cert: {
+  title: string;
+  issuing_organization: string;
+}): LucideIcon {
   const normalized = `${cert.title} ${cert.issuing_organization}`.toLowerCase();
   if (
     normalized.includes('university') ||

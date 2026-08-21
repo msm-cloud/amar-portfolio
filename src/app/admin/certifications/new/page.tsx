@@ -1,0 +1,29 @@
+import { redirect } from 'next/navigation';
+import { CertificationForm } from '@/components/admin/CertificationForm';
+import { createClient } from '@/lib/supabase/server';
+
+export default async function NewCertificationPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Defense in depth - see the same note in admin/dashboard/page.tsx.
+  // Both 'admin' and 'editor' roles reach this page fine: the form itself
+  // has no role-specific UI, and the actual write is authorized by RLS
+  // (certifications_write_admin_editor), not by anything checked here.
+  if (!user) {
+    redirect('/admin/login');
+  }
+
+  return (
+    <div>
+      <h1 className="text-2xl font-semibold text-foreground">
+        New Certification
+      </h1>
+      <div className="mt-6 max-w-xl">
+        <CertificationForm mode="create" />
+      </div>
+    </div>
+  );
+}

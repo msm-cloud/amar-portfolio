@@ -19,3 +19,12 @@ pages.
   fallback, featured/draft/published toggles). Used by both
   `src/app/admin/projects/new/page.tsx` and
   `src/app/admin/projects/[id]/edit/page.tsx`.
+- `ProficiencyLevelInput` — clickable 1-5 dot picker for
+  `skills.proficiency_level`, styled to match the public `ProficiencyDots`
+  (`components/ui/`) but interactive. Kept separate from that component
+  since it's a public, presentational-only primitive.
+- `SkillForm` / `ExperienceForm` / `CertificationForm` — shared create/edit
+  forms for the three simpler content types (no rich text, no detail
+  page). `ExperienceForm`'s "Currently Working Here" toggle
+  disables-and-clears the End Date field when turned on. All three follow
+  the same `useActionState` + `.bind(null, id)` pattern as `ProjectForm`.
