@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import DOMPurify from 'isomorphic-dompurify';
-import { ArrowLeft, Newspaper } from 'lucide-react';
+import { Newspaper } from 'lucide-react';
 import { CoverImage } from '@/components/ui/CoverImage';
 import { SectionContainer } from '@/components/ui/SectionContainer';
 import { GiscusComments } from '@/components/blog/GiscusComments';
 import { createClient } from '@/lib/supabase/server';
-import { estimateReadingTime, formatPublishedDate } from '@/lib/blog';
+import { BlogBackLink, BlogPostMeta } from './blog-post-chrome';
 
 // Real Supabase data - see the note in src/lib/blog.ts about bilingual
-// blog support being a later enhancement, not built here.
+// blog *content* support being a later enhancement, not built here. The
+// static chrome around it (back link, date/reading-time labels) is
+// bilingual though - see blog-post-chrome.tsx.
 
 async function getPublishedPostBySlug(slug: string) {
   const supabase = await createClient();
@@ -74,23 +75,13 @@ export default async function BlogPostPage({
       />
 
       <SectionContainer className="max-w-3xl">
-        <Link
-          href="/blog"
-          className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden />
-          Back to Blog
-        </Link>
+        <BlogBackLink />
 
         <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           {post.title}
         </h1>
 
-        <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-          <span>{formatPublishedDate(post.published_at)}</span>
-          <span aria-hidden>·</span>
-          <span>{estimateReadingTime(post.content)} min read</span>
-        </div>
+        <BlogPostMeta publishedAt={post.published_at} content={post.content} />
 
         <div
           className="prose prose-neutral dark:prose-invert mt-10 max-w-none border-t border-border pt-8"

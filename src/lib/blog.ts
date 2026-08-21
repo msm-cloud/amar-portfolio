@@ -8,11 +8,14 @@
  * than a placeholder shape.
  *
  * Bilingual note: blog_posts has title_bn/excerpt_bn/content_bn columns
- * already (same schema pattern as everywhere else), but this step
- * deliberately only renders the single language the admin actually wrote
- * (`title`/`excerpt`/`content`) - full bilingual blog support (reading
- * the _bn columns, wiring into src/lib/language-context.tsx like the
- * other sections) is a later enhancement, not built here.
+ * already (same schema pattern as everywhere else), but the public blog
+ * pages deliberately only ever render the single language the admin
+ * actually wrote (`title`/`excerpt`/`content`) - reading the _bn columns
+ * for post *content* is a later enhancement, not built here. The static
+ * chrome around that content (headings, "Back to Blog", empty/error
+ * states, the "X min read" label) IS wired into the language toggle
+ * though - see blog-heading.tsx, blog-list.tsx, and
+ * blog/[slug]/blog-post-chrome.tsx.
  */
 
 const WORDS_PER_MINUTE = 200;
