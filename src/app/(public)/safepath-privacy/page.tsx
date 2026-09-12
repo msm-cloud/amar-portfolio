@@ -52,6 +52,17 @@ export default function SafePathPrivacyPage() {
               (this is sent directly to Google Maps, not stored by us — see
               Section 4)
             </li>
+            <li>
+              <strong>Location History (optional, off by default):</strong>{' '}
+              if you choose to enable it from the &quot;Location History
+              Recording&quot; card on the Home tab, SafePath periodically
+              records your device&apos;s location. You choose how long
+              entries are kept — 6 hours, 24 hours, 3 days, or 7 days — with
+              24 hours as the default if you don&apos;t change it. This is
+              separate from the alert-based location above, and no history
+              is recorded unless you turn it on. See Section 5 for full
+              detail.
+            </li>
           </ul>
           <p>
             <strong>Emergency contact information:</strong> names and phone
@@ -71,7 +82,8 @@ export default function SafePathPrivacyPage() {
           <p>
             <strong>App preferences:</strong> your chosen language
             (Bangla/English) and safety feature settings (e.g. whether
-            Shake-to-Trigger or Fake Call Escape are turned on).
+            Shake-to-Trigger, Fake Call Escape, or Location History are
+            turned on, and your chosen Location History retention period).
           </p>
           <p>
             <strong>We do NOT collect:</strong> advertising identifiers,
@@ -96,6 +108,11 @@ export default function SafePathPrivacyPage() {
               while they are linked to your account
             </li>
             <li>
+              To let you and your linked Guardian(s) review your recent
+              Location History, only if you have chosen to enable this
+              optional feature
+            </li>
+            <li>
               To send offline SOS text messages to your saved Emergency
               Contacts when you have no internet connection
             </li>
@@ -117,10 +134,13 @@ export default function SafePathPrivacyPage() {
           <ul>
             <li>
               <strong>Your linked Guardian(s)</strong> can see your name,
-              your active/past alert history, and your live location only
-              while an alert is active — and only after you have generated
-              an invite code and they have accepted it. You can see this
-              relationship reflected on the Guardians screen.
+              your active/past alert history, your live location only while
+              an alert is active, and — only if you have chosen to enable
+              Location History — your location trail for whichever
+              retention period you&apos;ve selected. This access begins
+              only after you have generated an invite code and they have
+              accepted it. You can see this relationship reflected on the
+              Guardians screen.
             </li>
             <li>
               <strong>A Guardian&apos;s linked Student(s)</strong> can,
@@ -145,10 +165,10 @@ export default function SafePathPrivacyPage() {
           <ul>
             <li>
               <strong>Supabase</strong> — our database, authentication, and
-              backend hosting provider. Your account data, location data,
-              and alert history are stored on Supabase&apos;s
-              infrastructure, protected by access-control rules that
-              restrict who can read what.
+              backend hosting provider. Your account data, location data
+              (including Location History, if enabled), and alert history
+              are stored on Supabase&apos;s infrastructure, protected by
+              access-control rules that restrict who can read what.
             </li>
             <li>
               <strong>Resend</strong> — used to send email alerts to your
@@ -172,27 +192,59 @@ export default function SafePathPrivacyPage() {
 
           <h2>5. Location Data — Extra Detail</h2>
           <p>
-            Location is central to SafePath&apos;s safety purpose, so we
-            want to be extra clear about it:
+            SafePath&apos;s location behavior differs depending on which
+            features you use:
           </p>
+
+          <h3>5a. Alert and Journey location (live, event-based)</h3>
           <ul>
             <li>
-              Your location is only captured when you actively trigger an
-              SOS, are in an active Journey, or tap a &quot;Nearest
-              ___&quot; button.
+              Your location is captured when you actively trigger an SOS,
+              are in an active Journey, or tap a &quot;Nearest ___&quot;
+              button.
             </li>
             <li>
-              We do not track your location continuously or in the
-              background outside of an active SOS alert.
-            </li>
-            <li>
-              Location during an active alert is visible only to your
-              linked Guardian(s), and only while that specific alert
-              remains active or in your resolved alert history.
+              This location is visible only to your linked Guardian(s), and
+              only while that specific alert remains active or in your
+              resolved alert history.
             </li>
             <li>
               You can decline location permission entirely; SOS alerts will
               still work, just without a location attached.
+            </li>
+            <li>
+              Outside of the optional Location History feature described
+              below, we do not track your location continuously or in the
+              background.
+            </li>
+          </ul>
+
+          <h3>5b. Location History (optional, off by default)</h3>
+          <ul>
+            <li>
+              Location History does not record anything unless you turn it
+              on. It is off by default for every user.
+            </li>
+            <li>
+              You can enable it from the &quot;Location History
+              Recording&quot; card on the Home tab.
+            </li>
+            <li>
+              When enabled, you choose how long entries are kept: 6 hours,
+              24 hours, 3 days, or 7 days. If you don&apos;t change this,
+              entries are kept for 24 hours. Entries older than your
+              selected period are automatically deleted.
+            </li>
+            <li>
+              Location History is visible only to you and your linked
+              Guardian(s) — never to unrelated users, and accessed by us
+              only as described in Section 3.
+            </li>
+            <li>
+              You can turn Location History off at any time from the same
+              Home tab card. Doing so does not affect live alert location
+              during an active SOS or Journey (Section 5a), which operates
+              independently of this setting.
             </li>
           </ul>
 
@@ -211,7 +263,8 @@ export default function SafePathPrivacyPage() {
             <li>
               Guardians are responsible for understanding they are taking
               on a safety-monitoring role for the Student(s) linked to
-              them.
+              them, which may include visibility into that Student&apos;s
+              Location History if the Student has chosen to enable it.
             </li>
             <li>
               If you are a parent or guardian and believe a minor has
@@ -229,13 +282,20 @@ export default function SafePathPrivacyPage() {
               to you and your Guardian(s).
             </li>
             <li>
+              If you enable Location History, entries are retained for
+              whichever period you select (6 hours, 24 hours, 3 days, or 7
+              days — 24 hours by default) and are automatically deleted
+              once that period elapses.
+            </li>
+            <li>
               You may request deletion of your account and associated data,
               correction of inaccurate information, or a copy of the data
               we hold about you, at any time, by contacting us (Section 9).
             </li>
             <li>
               Deleting your account will also remove any guardian_link
-              relationships tied to it.
+              relationships tied to it, and immediately deletes any
+              remaining Location History entries.
             </li>
           </ul>
 
