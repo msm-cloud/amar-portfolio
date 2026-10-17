@@ -17,15 +17,14 @@ import type { Database } from '@/types/database';
 
 type ProjectRow = Database['public']['Tables']['projects']['Row'];
 
-// Featured projects render larger (large/wide) — the first featured
-// project found (regardless of its position in the array) gets the big
-// tile, the second gets the wide tile, any further ones fall back to the
-// default size. Grid-span classes live on the motion.div wrapper (the
-// actual CSS grid item), not on the nested BentoCard — see the note in
-// components/ui/README.md for why that distinction matters.
+// The first featured project gets a wide tile (2 of 3 columns) and every
+// other project, including a second featured one, takes a single column,
+// so the first row is always "wide + normal" with no empty slots. Grid-span
+// classes live on the motion.div wrapper (the actual CSS grid item), not on
+// the nested BentoCard — see the note in components/ui/README.md for why
+// that distinction matters.
 function spanClassFor(featuredIndex: number): string {
-  if (featuredIndex === 0) return 'sm:col-span-2 sm:row-span-2';
-  if (featuredIndex === 1) return 'sm:col-span-3';
+  if (featuredIndex === 0) return 'sm:col-span-2';
   return '';
 }
 
@@ -114,7 +113,7 @@ export function ProjectsGrid({
 
   return (
     <motion.div
-      className="grid grid-cols-1 gap-4 sm:grid-cols-3"
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
       variants={staggerContainer}
       initial={shouldReduceMotion ? 'visible' : 'hidden'}
       whileInView="visible"
