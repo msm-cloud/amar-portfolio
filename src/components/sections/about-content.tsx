@@ -93,7 +93,7 @@ export function AboutContent({
         {bio && (
           <motion.div variants={fadeInUp} className="sm:col-span-3">
             <BentoCard className="h-full">
-              <p className="text-base leading-relaxed text-foreground">
+              <p className="text-justify text-base leading-relaxed text-foreground">
                 {bio}
               </p>
             </BentoCard>
