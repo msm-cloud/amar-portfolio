@@ -19,6 +19,7 @@ import {
   Undo2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ImageUploadButton } from './ImageUploadButton';
 
 /**
  * Tiptap rich text editor + toolbar, shared by every admin content form
@@ -33,9 +34,11 @@ import { cn } from '@/lib/utils';
 export function RichTextEditor({
   content,
   onChange,
+  uploadFolder = 'projects',
 }: {
   content: string;
   onChange: (html: string) => void;
+  uploadFolder?: 'projects' | 'blog';
 }) {
   const editor = useEditor({
     immediatelyRender: false,
@@ -56,9 +59,7 @@ export function RichTextEditor({
 
   function promptForLink() {
     if (!editor) return;
-    const previousUrl = editor.getAttributes('link').href as
-      | string
-      | undefined;
+    const previousUrl = editor.getAttributes('link').href as string | undefined;
     const url = window.prompt('Link URL', previousUrl ?? 'https://');
     if (url === null) return; // cancelled
     if (url === '') {
@@ -77,7 +78,15 @@ export function RichTextEditor({
 
   return (
     <div className="rounded-lg border border-border bg-background">
-      <Toolbar editor={editor} onLink={promptForLink} onImage={promptForImage} />
+      <Toolbar
+        editor={editor}
+        onLink={promptForLink}
+        onImage={promptForImage}
+        onImageUploaded={(url) =>
+          editor?.chain().focus().setImage({ src: url }).run()
+        }
+        uploadFolder={uploadFolder}
+      />
       {editor ? (
         <EditorContent editor={editor} />
       ) : (
@@ -98,10 +107,14 @@ function Toolbar({
   editor,
   onLink,
   onImage,
+  onImageUploaded,
+  uploadFolder,
 }: {
   editor: Editor | null;
   onLink: () => void;
   onImage: () => void;
+  onImageUploaded: (url: string) => void;
+  uploadFolder: 'projects' | 'blog';
 }) {
   if (!editor) {
     return (
@@ -168,7 +181,7 @@ function Toolbar({
     },
     {
       icon: ImagePlus,
-      label: 'Image',
+      label: 'Image from URL',
       onClick: onImage,
       isActive: false,
     },
@@ -194,6 +207,7 @@ function Toolbar({
           type="button"
           onClick={onClick}
           aria-label={label}
+          title={label}
           aria-pressed={isActive}
           className={cn(
             'inline-flex h-8 w-8 items-center justify-center rounded-md text-foreground transition-colors hover:bg-muted',
@@ -203,6 +217,11 @@ function Toolbar({
           <Icon className="h-4 w-4" aria-hidden />
         </button>
       ))}
+      <ImageUploadButton
+        folder={uploadFolder}
+        onUploaded={onImageUploaded}
+        variant="icon"
+      />
     </div>
   );
 }

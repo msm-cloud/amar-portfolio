@@ -113,7 +113,11 @@ export function BlogPostForm({
         <label className="text-sm font-medium text-muted-foreground">
           Content
         </label>
-        <RichTextEditor content={post?.content ?? ''} onChange={setContentHtml} />
+        <RichTextEditor
+          content={post?.content ?? ''}
+          onChange={setContentHtml}
+          uploadFolder="blog"
+        />
       </div>
 
       <fieldset className="flex flex-col gap-2">

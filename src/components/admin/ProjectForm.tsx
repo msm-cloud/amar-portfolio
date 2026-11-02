@@ -11,6 +11,7 @@ import {
   type ProjectFormState,
 } from '@/server/actions/projects';
 import type { Database } from '@/types/database';
+import { ImageUploadButton } from './ImageUploadButton';
 import { RichTextEditor } from './RichTextEditor';
 import { TagInput } from './TagInput';
 
@@ -71,9 +72,7 @@ export function ProjectForm({
   const [status, setStatus] = useState<'draft' | 'published'>(
     project?.status ?? 'draft'
   );
-  const [displayOrder, setDisplayOrder] = useState(
-    project?.display_order ?? 0
-  );
+  const [displayOrder, setDisplayOrder] = useState(project?.display_order ?? 0);
   const [contentHtml, setContentHtml] = useState(project?.content ?? '');
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -171,20 +170,41 @@ export function ProjectForm({
         </datalist>
       </div>
 
-      <TagInput
-        name="tags"
-        label="Tags"
-        initialTags={project?.tags ?? []}
-      />
+      <TagInput name="tags" label="Tags" initialTags={project?.tags ?? []} />
 
-      <Input
-        label="Cover Image URL"
-        name="cover_image_url"
-        type="url"
-        placeholder="https://…"
-        value={coverImageUrl}
-        onChange={(e) => setCoverImageUrl(e.target.value)}
-      />
+      <div className="flex flex-col gap-2">
+        <Input
+          label="Cover Image URL"
+          name="cover_image_url"
+          type="url"
+          placeholder="https://…"
+          value={coverImageUrl}
+          onChange={(e) => setCoverImageUrl(e.target.value)}
+        />
+        <div className="flex flex-wrap items-start gap-3">
+          <ImageUploadButton
+            label="Upload cover image"
+            onUploaded={setCoverImageUrl}
+          />
+          {coverImageUrl && (
+            <button
+              type="button"
+              onClick={() => setCoverImageUrl('')}
+              className="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted"
+            >
+              Remove
+            </button>
+          )}
+        </div>
+        {coverImageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element -- admin-only preview of an arbitrary URL
+          <img
+            src={coverImageUrl}
+            alt="Cover image preview"
+            className="aspect-video w-full max-w-sm rounded-lg border border-border object-cover"
+          />
+        )}
+      </div>
       <Input
         label="Project URL (optional)"
         name="project_url"
