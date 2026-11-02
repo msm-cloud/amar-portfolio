@@ -2,6 +2,7 @@ import {
   Award,
   Banknote,
   Code2,
+  Gamepad2,
   GraduationCap,
   Landmark,
   Palette,
@@ -53,6 +54,9 @@ export function pickBilingual(
 /** Best-effort icon for a project's cover-image fallback, based on category. */
 export function getCategoryIcon(category: string | null): LucideIcon {
   const normalized = (category ?? '').toLowerCase();
+  if (normalized.includes('game')) {
+    return Gamepad2;
+  }
   if (normalized.includes('finance') || normalized.includes('bank')) {
     return Banknote;
   }
@@ -80,6 +84,8 @@ const CATEGORY_TRANSLATIONS: Record<string, string> = {
   'Tools & Other': 'টুলস ও অন্যান্য',
   'Web Development': 'ওয়েব ডেভেলপমেন্ট',
   'Web App': 'ওয়েব অ্যাপ',
+  'Mobile App': 'মোবাইল অ্যাপ',
+  Game: 'গেম',
 };
 
 export function translateCategory(
