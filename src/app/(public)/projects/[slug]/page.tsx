@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import DOMPurify from 'isomorphic-dompurify';
+import { sanitizeContent } from '@/lib/sanitize-content';
 import { createClient, createStaticClient } from '@/lib/supabase/server';
 import { ProjectDetailContent } from './project-detail-content';
 
@@ -91,10 +91,10 @@ export default async function ProjectDetailPage({
   // content is admin/editor-authored (RLS-protected write access), but
   // rendering it raw to every public visitor is still worth defending.
   // Done here (server-side) rather than in the client component so
-  // isomorphic-dompurify never has to ship to the browser bundle.
-  const safeContentHtml = DOMPurify.sanitize(project.content ?? '');
+  // the sanitizer never has to ship to the browser bundle.
+  const safeContentHtml = sanitizeContent(project.content);
   const safeContentBnHtml = project.content_bn
-    ? DOMPurify.sanitize(project.content_bn)
+    ? sanitizeContent(project.content_bn)
     : null;
 
   return (

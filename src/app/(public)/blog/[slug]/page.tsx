@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import DOMPurify from 'isomorphic-dompurify';
+import { sanitizeContent } from '@/lib/sanitize-content';
 import { Newspaper } from 'lucide-react';
 import { CoverImage } from '@/components/ui/CoverImage';
 import { SectionContainer } from '@/components/ui/SectionContainer';
@@ -61,9 +61,9 @@ export default async function BlogPostPage({
 
   // Sanitize before dangerouslySetInnerHTML: content is admin/editor-
   // authored (RLS-protected write access), but rendering it raw to every
-  // public visitor is still worth defending - see isomorphic-dompurify in
+  // public visitor is still worth defending - see sanitize-content in
   // package.json.
-  const safeContentHtml = DOMPurify.sanitize(post.content ?? '');
+  const safeContentHtml = sanitizeContent(post.content);
 
   return (
     <main className="flex flex-1 flex-col">
